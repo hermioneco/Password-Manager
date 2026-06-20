@@ -1,12 +1,14 @@
 package com.lockbox.lockbox;
 
 import javafx.application.Application;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
+@SpringBootApplication
 public class LockBoxApp extends Application {
 
     @Override

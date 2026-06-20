@@ -10,4 +10,5 @@ module com.lockbox.lockbox {
 
     exports com.lockbox.lockbox;
     exports com.lockbox.lockbox.controller;
+    requires spring.boot.autoconfigure;
 }
