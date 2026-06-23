@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.lockbox.lockbox.controller.RegisterController"
+            styleClass="app-background"
+            prefHeight="580.0" prefWidth="420.0">
+
+    <VBox alignment="CENTER" spacing="13.0"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+
+        <Label text=" LockBox" styleClass="title-label"/>
+        <Label text="Créer votre coffre" styleClass="subtitle-label"/>
+
+        <Label text="Email" styleClass="field-label"/>
+        <TextField fx:id="emailField" promptText="exemple@email.com"/>
+
+        <Label text="Mot de passe maître" styleClass="field-label"/>
+        <PasswordField fx:id="passwordField" promptText="••••••••"/>
+
+        <ProgressBar fx:id="strengthBar" progress="0" maxWidth="Infinity" styleClass="strength-bar"/>
+        <Label fx:id="strengthLabel" text="" styleClass="strength-label"/>
+
+        <Label text="Confirmer le mot de passe" styleClass="field-label"/>
+        <PasswordField fx:id="confirmField" promptText="••••••••"/>
+
+        <Label text=" Votre mot de passe maître est irrécupérable. Notez-le."
+               wrapText="true" styleClass="warning-box"/>
+
+        <Label fx:id="errorLabel" text="" styleClass="error-label"/>
+
+        <Button fx:id="registerButton" text="Créer mon compte"
+                onAction="#handleRegister"
+                maxWidth="Infinity"
+                styleClass="btn-primary"/>
+
+        <Hyperlink text="Déjà un compte ? Se connecter"
+                   onAction="#handleGoToLogin"
+                   styleClass="link-label"/>
+    </VBox>
+</AnchorPane>

@@ -16,6 +16,7 @@ public class LockBoxApp extends Application {
         );
 
         Scene scene = new Scene(fxmlLoader.load(), 420, 520);
+        scene.getStylesheets().add(getClass().getResource("/com/lockbox/lockbox/styles.css").toExternalForm());
         stage.setTitle("LockBox");
         stage.setScene(scene);
         stage.setResizable(false);

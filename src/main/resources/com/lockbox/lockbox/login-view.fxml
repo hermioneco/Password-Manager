@@ -3,62 +3,38 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.lockbox.lockbox.controller.LoginController"
-            prefHeight="520.0" prefWidth="420.0"
-            style="-fx-background-color: #1e1e2e;">
+            styleClass="app-background"
+            prefHeight="520.0" prefWidth="420.0">
 
     <VBox alignment="CENTER" spacing="15.0"
           AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
         <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
 
-        <!-- Titre -->
-        <Label text=" LockBox"
-               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #cdd6f4;"/>
+        <Label text="🔒 LockBox" styleClass="title-label"/>
+        <Label text="Connectez-vous à votre coffre" styleClass="subtitle-label"/>
 
-        <Label text="Connectez-vous à votre coffre"
-               style="-fx-font-size: 13px; -fx-text-fill: #6c7086;"/>
+        <VBox spacing="5">
+            <Label text="Email" styleClass="field-label"/>
+            <TextField fx:id="emailField" promptText="exemple@email.com"/>
 
-        <VBox spacing="5" style="-fx-padding-top: 20;">
-
-            <!-- Email -->
-            <Label text="Email" style="-fx-text-fill: #cdd6f4; -fx-font-size: 13px;"/>
-            <TextField fx:id="emailField"
-                       promptText="exemple@email.com"
-                       style="-fx-background-color: #313244; -fx-text-fill: #cdd6f4;
-                              -fx-prompt-text-fill: #6c7086; -fx-border-radius: 8;
-                              -fx-background-radius: 8; -fx-padding: 10;"/>
-
-            <!-- Mot de passe -->
-            <Label text="Mot de passe"
-                   style="-fx-text-fill: #cdd6f4; -fx-font-size: 13px; -fx-padding: 10 0 0 0;"/>
-            <PasswordField fx:id="passwordField"
-                           promptText="••••••••"
-                           style="-fx-background-color: #313244; -fx-text-fill: #cdd6f4;
-                                  -fx-prompt-text-fill: #6c7086; -fx-border-radius: 8;
-                                  -fx-background-radius: 8; -fx-padding: 10;"/>
+            <Label text="Mot de passe" styleClass="field-label"
+                   style="-fx-padding: 10 0 0 0;"/>
+            <PasswordField fx:id="passwordField" promptText="••••••••"/>
         </VBox>
 
-        <!-- Message d'erreur -->
-        <Label fx:id="errorLabel" text=""
-               style="-fx-text-fill: #f38ba8; -fx-font-size: 12px;"/>
+        <Label fx:id="errorLabel" text="" styleClass="error-label"/>
 
-        <!-- Bouton connexion -->
         <Button fx:id="loginButton" text="Se connecter"
                 onAction="#handleLogin"
                 maxWidth="Infinity"
-                style="-fx-background-color: #7c3aed; -fx-text-fill: white;
-                       -fx-font-size: 14px; -fx-font-weight: bold;
-                       -fx-background-radius: 8; -fx-padding: 12;
-                       -fx-cursor: hand;"/>
+                styleClass="btn-primary"/>
 
-        <!-- Lien inscription -->
         <Hyperlink text="Pas encore de compte ? S'inscrire"
                    onAction="#handleGoToRegister"
-                   style="-fx-text-fill: #7c3aed; -fx-border-color: transparent;"/>
-
+                   styleClass="link-label"/>
     </VBox>
 </AnchorPane>
