@@ -1,4 +1,4 @@
-package com.lockbox.lockbox;
+package com.lockbox;
 
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +14,7 @@ public class LockBoxApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/lockbox/lockbox/login-view.fxml")
+                getClass().getResource("/com/lockbox/fxml/login-view.fxml")
         );
 
         Scene scene = new Scene(fxmlLoader.load(), 420, 520);
@@ -26,5 +26,6 @@ public class LockBoxApp extends Application {
 
     public static void main(String[] args) {
         launch();
+        
     }
 }

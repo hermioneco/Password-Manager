@@ -2,14 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.lockbox.lockbox.services;
+package com.lockbox.services;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,8 +30,8 @@ public class CryptoService {
         throws Exception {
 
         // 1. Générer un IV unique et aléatoire
-        byte[] iv = new byte[GCM_IV_LENGTH];
-        new SecureRandom().nextBytes(iv);
+        byte[] iv = new byte[GCM_IV_LENGTH];//on cree un tableau de byte vide
+        new SecureRandom().nextBytes(iv);// et on le remplie
 
         // 2. Configurer le chiffrement AES-GCM
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -64,4 +67,28 @@ public class CryptoService {
         byte[] plaintext = cipher.doFinal(ciphertext);
         return new String(plaintext, StandardCharsets.UTF_8);
     }
+    
+    public SecretKey deriveKey(char[] password, byte[] salt)
+    throws Exception {
+
+    // Préparer la "recette" de dérivation
+    PBEKeySpec spec = new PBEKeySpec(
+        password,
+        salt,
+        100_000,  // 100 000 itérations → lent pour les attaquants
+        256       // 256 bits = taille de la clé AES-256
+    );
+
+    // Lancer la dérivation
+    SecretKeyFactory factory = SecretKeyFactory
+        .getInstance("PBKDF2WithHmacSHA256");
+    byte[] keyBytes = factory.generateSecret(spec).getEncoded();
+
+    // Effacer le mot de passe de la mémoire
+    Arrays.fill(password, '\0');
+    spec.clearPassword();
+
+    // Retourner la clé AES (stockée en mémoire seulement)
+    return new SecretKeySpec(keyBytes, "AES");
+}
 }
