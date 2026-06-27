@@ -1,7 +1,7 @@
-package com.lockbox.lockbox.service;
+package com.lockbox.service;
 
-import com.lockbox.lockbox.dao.UserRepository;
-import com.lockbox.lockbox.model.User;
+import com.lockbox.dao.UserRepository;
+import com.lockbox.model.User;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

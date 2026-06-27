@@ -1,4 +1,4 @@
-package com.lockbox.lockbox.model;
+package com.lockbox.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

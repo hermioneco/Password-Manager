@@ -1,4 +1,4 @@
-package com.lockbox.lockbox.service;
+package com.lockbox.service;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

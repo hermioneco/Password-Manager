@@ -1,4 +1,4 @@
-package com.lockbox.lockbox;
+package com.lockbox;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

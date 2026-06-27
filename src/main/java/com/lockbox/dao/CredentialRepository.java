@@ -1,7 +1,7 @@
-package com.lockbox.lockbox.dao;
+package com.lockbox.dao;
 
-import com.lockbox.lockbox.model.Credential;
-import com.lockbox.lockbox.model.User;
+import com.lockbox.model.Credential;
+import com.lockbox.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

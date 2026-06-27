@@ -1,4 +1,4 @@
-package com.lockbox.lockbox.controller;
+package com.lockbox.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

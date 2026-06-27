@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.lockbox.lockbox.controller.LoginController"
+            fx:controller="com.lockbox.controller.LoginController"
             prefHeight="520.0" prefWidth="420.0"
             style="-fx-background-color: #1e1e2e;">
 

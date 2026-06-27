@@ -1,4 +1,4 @@
-package com.lockbox.lockbox.service;
+package com.lockbox.service;
 
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.logging.Logger;

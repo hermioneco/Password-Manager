@@ -1,7 +1,7 @@
-package com.lockbox.lockbox;
+package com.lockbox;
 
-import com.lockbox.lockbox.service.AuthService;
-import com.lockbox.lockbox.service.DatabaseConfig;
+import com.lockbox.service.AuthService;
+import com.lockbox.service.DatabaseConfig;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -96,8 +96,8 @@ public class LockBoxApp extends Application {
 
         // Choix de la vue initiale selon l'état de la base
         String fxmlFile = authService.hasExistingUser()
-                ? "/com/lockbox/lockbox/login-view.fxml"
-                : "/com/lockbox/lockbox/login-view.fxml"; // register-view.fxml en Phase 2
+                ? "/com/lockbox/login-view.fxml"
+                : "/com/lockbox/login-view.fxml"; // register-view.fxml en Phase 2
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
 

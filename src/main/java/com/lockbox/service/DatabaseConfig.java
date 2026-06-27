@@ -1,4 +1,4 @@
-package com.lockbox.lockbox.service;
+package com.lockbox.service;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;

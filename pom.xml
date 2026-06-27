@@ -175,7 +175,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.lockbox.lockbox/com.lockbox.lockbox.LockBoxApp</mainClass>
+              <mainClass>com.lockbox.lockbox/com.lockbox.LockBoxApp</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

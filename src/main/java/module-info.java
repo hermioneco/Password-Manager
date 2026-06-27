@@ -8,7 +8,7 @@
  * @author  Base de données / DevOps
  * @version 1.0-SNAPSHOT
  */
-module com.lockbox.lockbox {
+module com.lockbox{
 
     // ── JavaFX ──────────────────────────────────────────
     requires javafx.controls;
@@ -48,16 +48,16 @@ module com.lockbox.lockbox {
     requires de.mkammerer.argon2.nolibs;
 
     // ── Ouvrir les packages pour JavaFX (injection FXML) ──
-    opens com.lockbox.lockbox to javafx.fxml, spring.core, spring.beans, spring.context;
-    opens com.lockbox.lockbox.controller to javafx.fxml, spring.beans, spring.context;
-    opens com.lockbox.lockbox.model to org.hibernate.orm.core, jakarta.persistence, spring.core;
-    opens com.lockbox.lockbox.service to spring.beans, spring.context, spring.core;
-    opens com.lockbox.lockbox.dao to spring.beans, spring.context, spring.data.jpa;
+    opens com.lockbox to javafx.fxml, spring.core, spring.beans, spring.context;
+    opens com.lockbox.controller to javafx.fxml, spring.beans, spring.context;
+    opens com.lockbox.model to org.hibernate.orm.core, jakarta.persistence, spring.core;
+    opens com.lockbox.service to spring.beans, spring.context, spring.core;
+    opens com.lockbox.dao to spring.beans, spring.context, spring.data.jpa;
 
     // ── Exporter les packages publics ───────────────────
-    exports com.lockbox.lockbox;
-    exports com.lockbox.lockbox.controller;
-    exports com.lockbox.lockbox.model;
-    exports com.lockbox.lockbox.service;
-    exports com.lockbox.lockbox.dao;
+    exports com.lockbox;
+    exports com.lockbox.controller;
+    exports com.lockbox.model;
+    exports com.lockbox.service;
+    exports com.lockbox.dao;
 }

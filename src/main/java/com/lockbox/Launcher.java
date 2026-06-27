@@ -1,6 +1,4 @@
-package com.lockbox.lockbox;
-
-import javafx.application.Application;
+package com.lockbox;
 
 public class Launcher {
     public static void main(String[] args) {
