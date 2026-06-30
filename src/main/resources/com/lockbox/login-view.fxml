@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.lockbox.lockbox.controller.LoginController"
+            fx:controller="com.lockbox.controller.LoginController"
             styleClass="app-background"
             prefHeight="520.0" prefWidth="420.0">
 
@@ -14,7 +14,7 @@
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
         <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
 
-        <Label text="🔒 LockBox" styleClass="title-label"/>
+        <Label text=" LockBox" styleClass="title-label"/>
         <Label text="Connectez-vous à votre coffre" styleClass="subtitle-label"/>
 
         <VBox spacing="5">

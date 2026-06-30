@@ -1,4 +1,4 @@
-package com.lockbox.lockbox.controller;
+package com.lockbox.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -93,10 +93,10 @@ public class RegisterController {
     @FXML
     private void handleGoToLogin() throws IOException {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/lockbox/lockbox/login-view.fxml")
+                getClass().getResource("/com/lockbox/login-view.fxml")
         );
         Scene scene = new Scene(loader.load(), 420, 520);
-        scene.getStylesheets().add(getClass().getResource("/com/lockbox/lockbox/styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/lockbox/styles.css").toExternalForm());
 
         Stage stage = (Stage) emailField.getScene().getWindow();
         stage.setScene(scene);

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.lockbox.lockbox.controller.RegisterController"
+            fx:controller="com.lockbox.controller.RegisterController"
             styleClass="app-background"
             prefHeight="580.0" prefWidth="420.0">
 
