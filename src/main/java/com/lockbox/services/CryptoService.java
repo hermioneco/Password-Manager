@@ -4,10 +4,20 @@
  */
 package com.lockbox.services;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import java.nio.charset.StandardCharsets;
+import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.util.Base64;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.GCMParameterSpec;
@@ -15,80 +25,75 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author ashie
- */
 @Service
 public class CryptoService {
 
-    private static final int GCM_TAG_LENGTH = 128;
-    private static final int GCM_IV_LENGTH  = 12;
+    private final Argon2 argon2 = Argon2Factory.create();
+    public  String encrypt(String Password, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+        byte[] iv = generateIV();
 
-    // CHIFFRER : texte lisible → bytes illisibles
-    public byte[] encrypt(String plaintext, SecretKey key)
-        throws Exception {
-
-        // 1. Générer un IV unique et aléatoire
-        byte[] iv = new byte[GCM_IV_LENGTH];//on cree un tableau de byte vide
-        new SecureRandom().nextBytes(iv);// et on le remplie
-
-        // 2. Configurer le chiffrement AES-GCM
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.ENCRYPT_MODE, key,
-            new GCMParameterSpec(GCM_TAG_LENGTH, iv));
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
+        cipher.init(Cipher.ENCRYPT_MODE, key, gcmSpec);
+        byte[] ciphertext = cipher.doFinal(Password.getBytes());
 
-        // 3. Chiffrer
-        byte[] ciphertext = cipher.doFinal(
-            plaintext.getBytes(StandardCharsets.UTF_8));
+        byte[] combinedIvAndCipherText = new byte[iv.length + ciphertext.length];
+        System.arraycopy(iv, 0, combinedIvAndCipherText, 0, iv.length);
+        System.arraycopy(ciphertext, 0, combinedIvAndCipherText, iv.length, ciphertext.length);
 
-        // 4. Stocker IV + ciphertext ensemble (on a besoin des deux)
-        byte[] result = new byte[iv.length + ciphertext.length];
-        System.arraycopy(iv, 0, result, 0, iv.length);
-        System.arraycopy(ciphertext, 0, result,
-            iv.length, ciphertext.length);
-        return result;
+        return Base64.getEncoder().encodeToString(combinedIvAndCipherText);
+
     }
 
-    // DÉCHIFFRER : bytes illisibles → texte lisible
-    public String decrypt(byte[] data, SecretKey key)
-        throws Exception {
+    public  String decrypt(String cipherText, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        byte[] decodedCipherText = Base64.getDecoder().decode(cipherText);
 
-        // 1. Extraire l'IV (les 12 premiers bytes)
-        byte[] iv = Arrays.copyOfRange(data, 0, GCM_IV_LENGTH);
-        byte[] ciphertext = Arrays.copyOfRange(
-            data, GCM_IV_LENGTH, data.length);
+        // Extract IV and encrypted text
+        byte[] iv = new byte[12];
+        System.arraycopy(decodedCipherText, 0, iv, 0, iv.length);
+        byte[] encryptedText = new byte[decodedCipherText.length - iv.length];
+        System.arraycopy(decodedCipherText, iv.length, encryptedText, 0, encryptedText.length);
 
-        // 2. Déchiffrer
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.DECRYPT_MODE, key,
-            new GCMParameterSpec(GCM_TAG_LENGTH, iv));
+        cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
+        byte[] decryptedBytes = cipher.doFinal(encryptedText);
 
-        byte[] plaintext = cipher.doFinal(ciphertext);
-        return new String(plaintext, StandardCharsets.UTF_8);
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
+
+    }
+
+    public  SecretKey generateKey(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+        SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
+                .getEncoded(), "AES");
+        return secret;
+    }
+
+    public  String hashingPassword(String PlainPassword) {
+
+        int ITERATIONS = 3;
+        int MEMORY_KB = 65536; 
+        int PARALLELISM = 4;
+        
+         char[] password = PlainPassword.toCharArray();
+        
+        String HashedPassword = argon2.hash(ITERATIONS, MEMORY_KB, PARALLELISM, password);
+        argon2.wipeArray(password);
+        return HashedPassword;
+
     }
     
-    public SecretKey deriveKey(char[] password, byte[] salt)
-    throws Exception {
-
-    // Préparer la "recette" de dérivation
-    PBEKeySpec spec = new PBEKeySpec(
-        password,
-        salt,
-        100_000,  // 100 000 itérations → lent pour les attaquants
-        256       // 256 bits = taille de la clé AES-256
-    );
-
-    // Lancer la dérivation
-    SecretKeyFactory factory = SecretKeyFactory
-        .getInstance("PBKDF2WithHmacSHA256");
-    byte[] keyBytes = factory.generateSecret(spec).getEncoded();
-
-    // Effacer le mot de passe de la mémoire
-    Arrays.fill(password, '\0');
-    spec.clearPassword();
-
-    // Retourner la clé AES (stockée en mémoire seulement)
-    return new SecretKeySpec(keyBytes, "AES");
-}
+    public boolean comparePassword( String HashedPassword, String EntredPassword) {
+        return argon2.verify(HashedPassword,EntredPassword.toCharArray());
+        
+    }
+    
+    public byte[] generateIV() {
+        byte [] iv = new byte[12];
+        SecureRandom secureRadom = new SecureRandom();
+        secureRadom.nextBytes(iv);
+        return iv;
+    }
 }

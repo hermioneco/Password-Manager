@@ -7,6 +7,7 @@ package com.lockbox.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.security.SecureRandom;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Lob;
@@ -31,8 +32,13 @@ public class User {
     private String passwordHash; // hash Argon2id — JAMAIS le mdp en clair
 
     @Lob
-    private byte[] salt;        // sel aléatoire pour la dérivation
+    private byte[] salt = new byte[12];        // sel aléatoire pour la dérivation
 
+    
+    public User() {
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(salt);
+    }
     public Long getId() {
         return this.id;
     }
@@ -55,6 +61,7 @@ public class User {
     }
     
     public byte[] getSalt() {
+        
         return this.salt;
     }
     public void setSalt(byte[] _salt) {

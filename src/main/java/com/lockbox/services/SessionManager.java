@@ -10,29 +10,3 @@ package com.lockbox.services;
  */
 
 
-import org.springframework.stereotype.Component;
-import javax.crypto.SecretKey;
-import java.util.Arrays;
-
-@Component
-public class SessionManager {
-
-    
-    private SecretKey keyInMemory;
-
-    public void setKey(SecretKey key) {
-        this.keyInMemory = key;
-    }
-
-    public SecretKey getKey() {
-        return keyInMemory;
-    }
-
-    public void clearSession() {
-        if (keyInMemory != null) {
-            byte[] encoded = keyInMemory.getEncoded();
-            Arrays.fill(encoded, (byte) 0);
-        }
-        keyInMemory = null;
-    }
-}
