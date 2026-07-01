@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.lockbox.controller.VaultController"
+            styleClass="app-background"
+            prefHeight="620.0" prefWidth="860.0">
+
+    <!-- ══════════ HEADER ══════════ -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15"
+              style="-fx-background-color: #181825; -fx-padding: 14 20 14 20;">
+
+            <Label text=" LockBox"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #cdd6f4;"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <TextField fx:id="searchField"
+                       promptText="🔍  Rechercher..."
+                       prefWidth="220"
+                       style="-fx-background-color: #313244; -fx-text-fill: #cdd6f4;
+                              -fx-prompt-text-fill: #6c7086; -fx-background-radius: 8;
+                              -fx-padding: 8 12 8 12;"/>
+
+            <Button fx:id="settingsButton" text="⚙"
+                    onAction="#handleSettings"
+                    style="-fx-background-color: #313244; -fx-text-fill: #cdd6f4;
+                           -fx-background-radius: 8; -fx-padding: 8 12 8 12;
+                           -fx-cursor: hand; -fx-font-size: 14px;"/>
+        </HBox>
+    </top>
+
+    <!-- ══════════ CENTRE ══════════ -->
+    <center>
+        <VBox spacing="14" style="-fx-padding: 20;">
+
+            <!-- Salutation -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Bonjour," styleClass="subtitle-label"/>
+                <Label fx:id="userEmailLabel" text="utilisateur"
+                       style="-fx-font-size: 13px; -fx-text-fill: #7c3aed; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <!-- Barre d'actions -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="addButton" text="＋  Ajouter"
+                        onAction="#handleAdd"
+                        styleClass="btn-primary"
+                        style="-fx-padding: 8 16 8 16;"/>
+
+                <Button fx:id="generateButton" text="🔑  Générer"
+                        onAction="#handleGenerate"
+                        style="-fx-background-color: #313244; -fx-text-fill: #cdd6f4;
+                               -fx-background-radius: 8; -fx-padding: 8 16 8 16;
+                               -fx-cursor: hand;"/>
+
+                <Button fx:id="exportButton" text="📤  Exporter"
+                        onAction="#handleExport"
+                        style="-fx-background-color: #313244; -fx-text-fill: #cdd6f4;
+                               -fx-background-radius: 8; -fx-padding: 8 16 8 16;
+                               -fx-cursor: hand;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="entryCountLabel" text="0 entrée(s)"
+                       styleClass="subtitle-label"/>
+            </HBox>
+
+            <!-- Tableau des mots de passe -->
+            <TableView fx:id="passwordTable"
+                       VBox.vgrow="ALWAYS"
+                       style="-fx-background-color: #181825; -fx-border-color: #313244;
+                              -fx-border-radius: 8; -fx-background-radius: 8;">
+
+                <columns>
+                    <TableColumn fx:id="colTitle" text="Titre" prefWidth="180"/>
+                    <TableColumn fx:id="colUsername" text="Identifiant" prefWidth="200"/>
+                    <TableColumn fx:id="colUrl" text="URL" prefWidth="200"/>
+                    <TableColumn fx:id="colPassword" text="Mot de passe" prefWidth="160"/>
+                    <TableColumn fx:id="colActions" text="Actions" prefWidth="110"/>
+                </columns>
+
+                <placeholder>
+                    <Label text="Aucun mot de passe enregistré. Cliquez sur ＋ Ajouter !"
+                           styleClass="subtitle-label"/>
+                </placeholder>
+            </TableView>
+
+        </VBox>
+    </center>
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT"
+              style="-fx-background-color: #181825; -fx-padding: 10 20 10 20;">
+            <Button fx:id="logoutButton" text="🚪  Se déconnecter"
+                    onAction="#handleLogout"
+                    style="-fx-background-color: transparent; -fx-text-fill: #f38ba8;
+                           -fx-border-color: #f38ba8; -fx-border-radius: 8;
+                           -fx-background-radius: 8; -fx-padding: 8 16 8 16;
+                           -fx-cursor: hand;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

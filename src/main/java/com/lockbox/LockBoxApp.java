@@ -1,5 +1,6 @@
 package com.lockbox;
 
+<<<<<<< HEAD
 import com.lockbox.model.User;
 import com.lockbox.repository.UserRepository;
 import javafx.application.Application;
@@ -23,20 +24,39 @@ import javax.crypto.SecretKey;
 public class LockBoxApp extends Application {
     static CryptoService crypto = new CryptoService();
     
+=======
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class LockBoxApp extends Application {
+>>>>>>> 535533973bd0930c1d5ead3e9838a6dadb1dd5c9
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
+<<<<<<< HEAD
                 getClass().getResource("/com/lockbox/fxml/login-view.fxml")
         );
 
         Scene scene = new Scene(fxmlLoader.load(), 420, 520);
+=======
+                getClass().getResource("/com/lockbox/login-view.fxml")
+        );
+
+        Scene scene = new Scene(fxmlLoader.load(), 420, 520);
+        scene.getStylesheets().add(getClass().getResource("/com/lockbox/styles.css").toExternalForm());
+>>>>>>> 535533973bd0930c1d5ead3e9838a6dadb1dd5c9
         stage.setTitle("LockBox");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
+<<<<<<< HEAD
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
         
         
@@ -54,5 +74,9 @@ public class LockBoxApp extends Application {
         launch();
         
         
+=======
+    public static void main(String[] args) {
+        launch();
+>>>>>>> 535533973bd0930c1d5ead3e9838a6dadb1dd5c9
     }
 }

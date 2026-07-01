@@ -1,0 +1,111 @@
+/* ============================================
+   LOCKBOX - DESIGN SYSTEM
+   ============================================ */
+
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* ── Couleurs (référence) ──
+   Fond principal   : #1e1e2e
+   Fond secondaire  : #2a2737
+   Champs           : #313244
+   Texte principal  : #cdd6f4
+   Texte secondaire : #6c7086
+   Accent (violet)  : #7c3aed
+   Erreur           : #f38ba8
+   Warning          : #f9e2af
+   Succès           : #a6e3a1
+*/
+
+/* ── Conteneur racine ── */
+.app-background {
+    -fx-background-color: #1e1e2e;
+}
+
+/* ── Titres ── */
+.title-label {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #cdd6f4;
+}
+
+.subtitle-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6c7086;
+}
+
+.field-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #cdd6f4;
+}
+
+/* ── Champs de saisie ── */
+.text-field, .password-field {
+    -fx-background-color: #313244;
+    -fx-text-fill: #cdd6f4;
+    -fx-prompt-text-fill: #6c7086;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-border-color: transparent;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #7c3aed;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+}
+
+/* ── Boutons principaux ── */
+.btn-primary {
+    -fx-background-color: #7c3aed;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #6d28d9;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #5b21b6;
+}
+
+/* ── Liens ── */
+.link-label {
+    -fx-text-fill: #7c3aed;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.link-label:hover {
+    -fx-underline: true;
+}
+
+/* ── Messages ── */
+.error-label {
+    -fx-text-fill: #f38ba8;
+    -fx-font-size: 12px;
+}
+
+.warning-box {
+    -fx-font-size: 11px;
+    -fx-text-fill: #f9e2af;
+    -fx-background-color: #2a2737;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+}
+
+/* ── Barre de force mot de passe ── */
+.strength-bar {
+    -fx-pref-height: 6px;
+}
+
+.strength-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6c7086;
+}

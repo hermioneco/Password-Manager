@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.lockbox.controller.LoginController"
+            styleClass="app-background"
+            prefHeight="520.0" prefWidth="420.0">
+
+    <VBox alignment="CENTER" spacing="15.0"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+
+        <Label text=" LockBox" styleClass="title-label"/>
+        <Label text="Connectez-vous à votre coffre" styleClass="subtitle-label"/>
+
+        <VBox spacing="5">
+            <Label text="Email" styleClass="field-label"/>
+            <TextField fx:id="emailField" promptText="exemple@email.com"/>
+
+            <Label text="Mot de passe" styleClass="field-label"
+                   style="-fx-padding: 10 0 0 0;"/>
+            <PasswordField fx:id="passwordField" promptText="••••••••"/>
+        </VBox>
+
+        <Label fx:id="errorLabel" text="" styleClass="error-label"/>
+
+        <Button fx:id="loginButton" text="Se connecter"
+                onAction="#handleLogin"
+                maxWidth="Infinity"
+                styleClass="btn-primary"/>
+
+        <Hyperlink text="Pas encore de compte ? S'inscrire"
+                   onAction="#handleGoToRegister"
+                   styleClass="link-label"/>
+    </VBox>
+</AnchorPane>
