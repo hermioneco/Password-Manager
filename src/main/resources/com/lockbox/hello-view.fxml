@@ -6,7 +6,11 @@
 
 <?import javafx.scene.control.Button?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<<<<<<<< HEAD:src/main/resources/com/lockbox/fxml/hello-view.fxml
+      fx:controller="com.lockbox.controller.HelloController">
+========
       fx:controller="com.lockbox.HelloController">
+>>>>>>>> 535533973bd0930c1d5ead3e9838a6dadb1dd5c9:src/main/resources/com/lockbox/hello-view.fxml
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>
