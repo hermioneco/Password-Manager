@@ -4,13 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-<<<<<<< HEAD
-=======
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
->>>>>>> 535533973bd0930c1d5ead3e9838a6dadb1dd5c9
 
 public class LoginController {
 
@@ -24,11 +21,7 @@ public class LoginController {
     private Label errorLabel;
 
     @FXML
-<<<<<<< HEAD
-    private void handleLogin() {
-=======
     private void handleLogin() throws IOException {
->>>>>>> 535533973bd0930c1d5ead3e9838a6dadb1dd5c9
         String email = emailField.getText().trim();
         String password = passwordField.getText();
 
@@ -37,18 +30,6 @@ public class LoginController {
             return;
         }
 
-<<<<<<< HEAD
-        // TODO : brancher sur AuthService (Semaine 2)
-        System.out.println("Tentative de connexion : " + email);
-        errorLabel.setText("Service d'authentification pas encore connecté.");
-    }
-
-    @FXML
-    private void handleGoToRegister() {
-        // TODO : navigation vers RegisterView (J4)
-        System.out.println("Navigation vers l'inscription...");
-    }
-=======
         // TODO : brancher AuthService
         // Pour l'instant on navigue directement
         FXMLLoader loader = new FXMLLoader(
@@ -81,5 +62,4 @@ public class LoginController {
     }
 
 
->>>>>>> 535533973bd0930c1d5ead3e9838a6dadb1dd5c9
 }

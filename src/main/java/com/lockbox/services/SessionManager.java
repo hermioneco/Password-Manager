@@ -4,9 +4,31 @@
  */
 package com.lockbox.services;
 
+import java.util.Arrays;
+import javax.crypto.SecretKey;
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author ashie
  */
-
-
+@Component
+public class SessionManager {
+    private SecretKey key ;
+    
+    public void setKey(SecretKey key) {
+        this.key = key;
+    }
+    
+    public SecretKey getKey() {
+        return this.key ;
+    }
+    
+    public void clearSession() {
+        if(key != null) {
+            Arrays.fill(key.getEncoded(), (byte) 0);
+        key = null;
+        }
+        
+    }
+}

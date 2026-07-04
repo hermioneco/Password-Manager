@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -28,8 +29,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CryptoService {
 
-    private final Argon2 argon2 = Argon2Factory.create();
-    public  String encrypt(String Password, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+    private final Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+    public  byte[] encrypt(String Password, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
         byte[] iv = generateIV();
 
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -41,11 +42,11 @@ public class CryptoService {
         System.arraycopy(iv, 0, combinedIvAndCipherText, 0, iv.length);
         System.arraycopy(ciphertext, 0, combinedIvAndCipherText, iv.length, ciphertext.length);
 
-        return Base64.getEncoder().encodeToString(combinedIvAndCipherText);
+        return Base64.getEncoder().encode(combinedIvAndCipherText);
 
     }
 
-    public  String decrypt(String cipherText, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public  byte[] decrypt(String cipherText, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         byte[] decodedCipherText = Base64.getDecoder().decode(cipherText);
 
         // Extract IV and encrypted text
@@ -59,25 +60,32 @@ public class CryptoService {
         cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
         byte[] decryptedBytes = cipher.doFinal(encryptedText);
 
-        return new String(decryptedBytes, StandardCharsets.UTF_8);
+        return decryptedBytes;
 
     }
 
-    public  SecretKey generateKey(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+    public  SecretKey generateKey(char[] password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        try {
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(password, salt, 65536, 256);
         SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
                 .getEncoded(), "AES");
         return secret;
+        }catch(Exception e){
+            throw e;
+        }finally{
+           Arrays.fill(password, '\0');
+        }
+            
     }
 
-    public  String hashingPassword(String PlainPassword) {
+    public  String hashingPassword(char[] PlainPassword) {
 
         int ITERATIONS = 3;
         int MEMORY_KB = 65536; 
         int PARALLELISM = 4;
         
-         char[] password = PlainPassword.toCharArray();
+         char[] password = PlainPassword;
         
         String HashedPassword = argon2.hash(ITERATIONS, MEMORY_KB, PARALLELISM, password);
         argon2.wipeArray(password);
@@ -85,8 +93,8 @@ public class CryptoService {
 
     }
     
-    public boolean comparePassword( String HashedPassword, String EntredPassword) {
-        return argon2.verify(HashedPassword,EntredPassword.toCharArray());
+    public boolean comparePassword(String HashedPassword, char[] EntredPassword) {
+        return argon2.verify(HashedPassword,EntredPassword);
         
     }
     
@@ -96,4 +104,6 @@ public class CryptoService {
         secureRadom.nextBytes(iv);
         return iv;
     }
+    
+    
 }

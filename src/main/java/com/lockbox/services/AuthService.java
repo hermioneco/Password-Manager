@@ -16,9 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
     
-    @Autowired
+    
     private  final UserRepository userRepo;
-    @Autowired
     private  final CryptoService crypto ;
     
     public AuthService(UserRepository userRepo, CryptoService crypto) {
@@ -26,22 +25,24 @@ public class AuthService {
         this.crypto = crypto;
     }
     
-    public  void register(String email, String PlainPassword) {
+    public  void register(String email, char[] PlainPassword) {
         try {
             User user = new User();
          user.setEmail(email);
          user.setPasswordHash(crypto.hashingPassword(PlainPassword));
          userRepo.save(user);
-        }catch (Exception e){}
+        }catch (Exception e){
+            throw new RuntimeException("Échec de l'inscription", e);
+        }
         finally{
          PlainPassword = null;  }
     }
     
-    public SecretKey login(String email, String EnteredPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public SecretKey login(String email, char[] EnteredPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User user = userRepo.findByEmail(email).orElseThrow(() ->new InvalidCredentialsException());
         
         try {
-            if(crypto.comparePassword(EnteredPassword, user.getPasswordHash())) {
+            if(crypto.comparePassword(user.getPasswordHash(), EnteredPassword)) {
                 return crypto.generateKey(EnteredPassword, user.getSalt());
             }
         }catch(InvalidCredentialsException e){
@@ -50,6 +51,7 @@ public class AuthService {
         finally{
         EnteredPassword = null;
         }
-        return null;
+       throw new InvalidCredentialsException();
     }
 }
+

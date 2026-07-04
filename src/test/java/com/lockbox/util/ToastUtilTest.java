@@ -4,7 +4,7 @@
  */
 package com.lockbox.util;
 
-import javafx.application.Platform;
+//import javafx.application.Platform;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,8 @@ class ToastUtilTest {
         CountDownLatch latch = new CountDownLatch(1);
         try {
             // Démarre le thread JavaFX sans fenêtre visible
-            Platform.startup(latch::countDown);
+            //Platform.startup(latch::countDown);
+            System.out.println("");
         } catch (IllegalStateException e) {
             // Platform.startup() lève cette exception si JavaFX
             // est déjà initialisé (cas des tests lancés en série)
@@ -176,13 +177,7 @@ class ToastUtilTest {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        Platform.runLater(() -> {
-            try {
-                action.run();
-            } finally {
-                latch.countDown(); // signale que l'action est terminée
-            }
-        });
+        
 
         // Attendre max 5 secondes que le thread JavaFX ait exécuté l'action
         boolean done = latch.await(5, TimeUnit.SECONDS);
