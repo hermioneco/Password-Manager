@@ -35,9 +35,7 @@ public class AuthServiceTest {
     @BeforeEach
     public void setUp() {
         User user = new User();
-        user.setEmail("mama@gmail.com");
-        auth = new AuthService(userRepo, crypto);
-        
+        auth = new AuthService(userRepo, crypto, new SessionManager());
 
     }
     @Test

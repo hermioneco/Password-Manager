@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap Quotidien — LockBox · 3 personnes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f172a;--paper:#f8fafc;--card:#fff;
+  --border:#e2e8f0;--border2:#cbd5e1;--muted:#64748b;
+  /* Personnes */
+  --p1:#7c3aed;--p1l:#ede9fe;--p1b:#ddd6fe;--p1d:#5b21b6;
+  --p2:#0891b2;--p2l:#cffafe;--p2b:#a5f3fc;--p2d:#0e7490;
+  --p3:#059669;--p3l:#d1fae5;--p3b:#6ee7b7;--p3d:#047857;
+  /* Phases */
+  --ph1:#7c3aed;--ph1l:#ede9fe;
+  --ph2:#2563eb;--ph2l:#dbeafe;
+  --ph3:#dc2626;--ph3l:#fee2e2;
+  --ph4:#d97706;--ph4l:#fef3c7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+
+/* ── HERO ── */
+.hero{background:var(--ink);padding:40px 48px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;border:1px solid rgba(124,58,237,.15)}
+.hero::after{content:'';position:absolute;left:35%;bottom:-80px;width:180px;height:180px;border-radius:50%;border:1px solid rgba(8,145,178,.1)}
+.hero-lbl{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a78bfa;font-weight:600;margin-bottom:12px}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,42px);color:#f1f5f9;line-height:1.15;margin-bottom:10px}
+.hero h1 em{color:#67e8f9;font-style:italic}
+.hero-sub{font-size:14px;color:#94a3b8;max-width:560px;margin-bottom:28px;font-weight:300}
+.persons-row{display:flex;gap:12px;flex-wrap:wrap}
+.person-chip{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.1)}
+.pc1{background:rgba(124,58,237,.15)}
+.pc2{background:rgba(8,145,178,.15)}
+.pc3{background:rgba(5,150,105,.15)}
+.pa{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.pa1{background:var(--p1);color:#fff}
+.pa2{background:var(--p2);color:#fff}
+.pa3{background:var(--p3);color:#fff}
+.pc-info .name{font-size:13px;font-weight:600;color:#f1f5f9}
+.pc-info .role{font-size:11px;color:#94a3b8}
+
+/* ── WRAP ── */
+.wrap{max-width:1020px;margin:0 auto;padding:32px 32px 64px}
+
+/* ── PHASE TABS ── */
+.phase-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px}
+.ph-tab{padding:6px 16px;border-radius:9999px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);color:var(--muted);background:var(--card);transition:all .15s}
+.ph-tab.active{color:#fff;border-color:transparent}
+.ph-tab.t1.active{background:var(--ph1)}
+.ph-tab.t2.active{background:var(--ph2)}
+.ph-tab.t3.active{background:var(--ph3)}
+.ph-tab.t4.active{background:var(--ph4)}
+
+/* ── VIEW TOGGLE ── */
+.view-toggle{display:flex;gap:6px;margin-bottom:24px;background:var(--card);padding:4px;border-radius:10px;border:1px solid var(--border);width:fit-content}
+.vt-btn{padding:5px 14px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;color:var(--muted);background:transparent;border:none;transition:all .15s}
+.vt-btn.active{background:var(--ink);color:#fff}
+
+/* ── PANEL ── */
+.panel{display:none}.panel.active{display:block}
+
+/* ── WEEK GRID (vue par semaine) ── */
+.week-block{margin-bottom:32px}
+.week-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.week-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--muted);font-style:italic}
+.week-theme{font-size:14px;font-weight:600;color:var(--ink)}
+.week-days{font-size:12px;color:var(--muted);margin-left:auto}
+
+.day-grid{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:2px}
+.dg-header{display:contents}
+.dg-col-head{padding:8px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-radius:6px 6px 0 0;text-align:center}
+.ch-day{background:var(--paper);color:var(--muted)}
+.ch1{background:var(--p1l);color:var(--p1d)}
+.ch2{background:var(--p2l);color:var(--p2d)}
+.ch3{background:var(--p3l);color:var(--p3d)}
+
+.day-row{display:contents}
+.day-label{padding:10px 8px;font-size:11px;font-weight:600;color:var(--muted);background:var(--paper);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:4px;flex-direction:column}
+.day-label .dn{font-size:13px;font-weight:700;color:var(--ink)}
+.day-cell{padding:10px 12px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);font-size:12px;line-height:1.55;vertical-align:top;background:var(--card)}
+.day-cell:last-child{border-right:none}
+.day-cell .task-item{display:flex;gap:6px;align-items:flex-start;padding:3px 0}
+.day-cell .task-item::before{content:'·';color:var(--muted);font-size:16px;line-height:1;flex-shrink:0;margin-top:-1px}
+.day-cell .tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:9999px;margin-bottom:4px}
+.t-code{background:#fef3c7;color:#92400e}
+.t-ui{background:var(--p1l);color:var(--p1d)}
+.t-db{background:var(--p3l);color:var(--p3d)}
+.t-sec{background:#fee2e2;color:#991b1b}
+.t-test{background:var(--p2l);color:var(--p2d)}
+.t-meet{background:#f3f4f6;color:#374151}
+.day-cell.weekend{background:#f8fafc;opacity:.6}
+.day-cell .meet-bar{background:var(--paper);border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px}
+
+/* ── VUE PAR PERSONNE ── */
+.person-view{display:none}.person-view.active{display:block}
+.pv-toggle{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.pv-btn{padding:7px 18px;border-radius:9999px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);color:var(--muted);background:var(--card);transition:all .15s}
+.pv-btn.a1{background:var(--p1);color:#fff;border-color:var(--p1)}
+.pv-btn.a2{background:var(--p2);color:#fff;border-color:var(--p2)}
+.pv-btn.a3{background:var(--p3);color:#fff;border-color:var(--p3)}
+
+.person-timeline{display:none}.person-timeline.active{display:block}
+.pt-week{margin-bottom:20px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--card)}
+.pt-whead{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--paper);border-bottom:1px solid var(--border)}
+.pt-wnum{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.pt-wtitle{font-size:13px;font-weight:500;color:var(--ink)}
+.pt-days{display:flex;flex-direction:column}
+.pt-day{display:flex;align-items:flex-start;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border)}
+.pt-day:last-child{border-bottom:none}
+.pt-dname{font-size:11px;font-weight:700;color:var(--muted);width:70px;flex-shrink:0;padding-top:2px}
+.pt-tasks{flex:1;font-size:12.5px;line-height:1.65;color:var(--ink)}
+.pt-task{display:flex;gap:7px;align-items:flex-start;padding:2px 0}
+.pt-task::before{content:'▸';flex-shrink:0;font-size:10px;margin-top:3px}
+.p1-color::before{color:var(--p1)}
+.p2-color::before{color:var(--p2)}
+.p3-color::before{color:var(--p3)}
+
+/* ── SYNC POINTS ── */
+.sync{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--paper);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--muted);margin-top:6px}
+.sync-icon{font-size:14px}
+
+/* ── LIVRABLE BADGE ── */
+.livrable{background:var(--p3l);border:1px solid var(--p3b);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--p3d);margin-top:8px;font-weight:500}
+
+/* ── SUMMARY ── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px}
+@media(max-width:640px){.summary-grid{grid-template-columns:1fr}}
+.sum-card{border-radius:12px;padding:18px 20px;border:1px solid}
+.s1{background:var(--p1l);border-color:var(--p1b)}
+.s2{background:var(--p2l);border-color:var(--p2b)}
+.s3{background:var(--p3l);border-color:var(--p3b)}
+.sum-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.s1 .sum-name{color:var(--p1d)}
+.s2 .sum-name{color:var(--p2d)}
+.s3 .sum-name{color:var(--p3d)}
+.sum-role{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.sum-resp{font-size:12px;color:var(--muted);line-height:1.65}
+
+.legend-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div style="max-width:1020px;margin:0 auto;position:relative;z-index:1">
+    <div class="hero-lbl">LockBox Java · 8 semaines · 3 personnes</div>
+    <h1>Roadmap <em>quotidien</em><br>par personne</h1>
+    <p class="hero-sub">Chaque jour, chaque personne sait exactement quoi faire. Synchronisation tous les 2 jours. Aucun travail ne se chevauche.</p>
+    <div class="persons-row">
+      <div class="person-chip pc1">
+        <div class="pa pa1">A</div>
+        <div class="pc-info"><div class="name">Personne A</div><div class="role">JavaFX · UI · FXML · CSS · Controllers</div></div>
+      </div>
+      <div class="person-chip pc2">
+        <div class="pa pa2">B</div>
+        <div class="pc-info"><div class="name">Personne B</div><div class="role">Sécurité · Crypto · Spring · AuthService</div></div>
+      </div>
+      <div class="person-chip pc3">
+        <div class="pa pa3">C</div>
+        <div class="pc-info"><div class="name">Personne C</div><div class="role">Base de données · JPA · Tests · Packaging</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- RÉSUMÉ DES RÔLES -->
+<div class="summary-grid">
+  <div class="sum-card s1">
+    <div class="sum-name">🎨 Personne A</div>
+    <div class="sum-role">Frontend / JavaFX</div>
+    <div class="sum-resp">Toutes les vues FXML · Tous les Controllers JavaFX · CSS et thème · Animations · Composants UI réutilisables</div>
+  </div>
+  <div class="sum-card s2">
+    <div class="sum-name">🔒 Personne B</div>
+    <div class="sum-role">Sécurité / Backend</div>
+    <div class="sum-resp">CryptoService (AES-256-GCM) · AuthService (Argon2id) · PBKDF2 · Services métier · Générateur de mots de passe · TOTP</div>
+  </div>
+  <div class="sum-card s3">
+    <div class="sum-name">🗄 Personne C</div>
+    <div class="sum-role">Base de données / DevOps</div>
+    <div class="sum-resp">Entités JPA · Repositories · SQLite · Maven (pom.xml) · module-info.java · JUnit 5 · jpackage · Documentation</div>
+  </div>
+</div>
+
+<!-- LÉGENDE -->
+<div class="legend-row">
+  <div class="leg"><div class="leg-dot" style="background:#f59e0b"></div>Config / Setup</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--p1)"></div>UI / JavaFX</div>
+  <div class="leg"><div class="leg-dot" style="background:#dc2626"></div>Sécurité / Crypto</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--p3)"></div>Base de données</div>
+  <div class="leg"><div class="leg-dot" style="background:var(--p2)"></div>Tests</div>
+  <div class="leg"><div class="leg-dot" style="background:#6b7280"></div>Sync / Réunion</div>
+</div>
+
+<!-- TABS PHASES -->
+<div class="phase-tabs">
+  <div class="ph-tab t1 active" onclick="showPhase('ph1',this)">Phase 1 — Semaines 1–2</div>
+  <div class="ph-tab t2" onclick="showPhase('ph2',this)">Phase 2 — Semaines 3–4</div>
+  <div class="ph-tab t3" onclick="showPhase('ph3',this)">Phase 3 — Semaines 5–6</div>
+  <div class="ph-tab t4" onclick="showPhase('ph4',this)">Phase 4 — Semaines 7–8</div>
+</div>
+
+<!-- VIEW TOGGLE -->
+<div class="view-toggle">
+  <div class="vt-btn active" onclick="setView('week',this)">Vue semaine</div>
+  <div class="vt-btn" onclick="setView('person',this)">Vue par personne</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PHASE 1
+═══════════════════════════════════ -->
+<div id="ph1" class="panel active">
+
+  <!-- VUE SEMAINE -->
+  <div id="week-view" class="person-view active">
+
+    <!-- SEMAINE 1 -->
+    <div class="week-block">
+      <div class="week-header">
+        <div class="week-num">S1</div>
+        <div class="week-theme">🏗 Setup · Structure · Premiers services</div>
+        <div class="week-days">Lundi → Vendredi</div>
+      </div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <!-- LUNDI -->
+        <div class="day-label"><span class="dn">Lun</span>J1</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Installer IntelliJ IDEA + SceneBuilder</div>
+          <div class="task-item">Créer projet Maven avec archetype JavaFX-FXML</div>
+          <div class="task-item">Vérifier que <code>mvn javafx:run</code> ouvre une fenêtre vide</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Installer IntelliJ IDEA + Java 21</div>
+          <div class="task-item">Cloner le projet créé par A</div>
+          <div class="task-item">Lire doc Argon2id + Baeldung AES article</div>
+          <div class="task-item">Comprendre le flux auth (schéma papier)</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-db">BASE DE DONNÉES</div>
+          <div class="task-item">Installer DB Browser for SQLite</div>
+          <div class="task-item">Cloner le projet créé par A</div>
+          <div class="task-item">Configurer <code>pom.xml</code> : ajouter Spring Boot parent + toutes les dépendances</div>
+          <div class="task-item">Créer <code>module-info.java</code></div>
+        </div>
+
+        <!-- MARDI -->
+        <div class="day-label"><span class="dn">Mar</span>J2</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Créer la structure des packages MVC (model/service/dao/controller)</div>
+          <div class="task-item">Créer <code>LockBoxApp.java</code> extends Application avec Spring bridge</div>
+          <div class="task-item">Créer <code>LoginView.fxml</code> dans SceneBuilder : email + PasswordField + bouton</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Créer <code>CryptoService.java</code> avec squelette (méthodes vides)</div>
+          <div class="task-item">Implémenter la génération IV : <code>SecureRandom.nextBytes(12)</code></div>
+          <div class="task-item">Implémenter <code>encrypt()</code> avec AES/GCM/NoPadding</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-db">BASE DE DONNÉES</div>
+          <div class="task-item">Créer <code>application.properties</code> avec config SQLite</div>
+          <div class="task-item">Créer entité <code>User.java</code> avec annotations JPA (@Entity, @Id, @Column)</div>
+          <div class="task-item">Créer entité <code>Credential.java</code> avec @Lob pour ciphertext et iv</div>
+        </div>
+
+        <!-- MERCREDI -->
+        <div class="day-label"><span class="dn">Mer</span>J3</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Créer <code>LoginController.java</code> avec @FXML emailField + passwordField</div>
+          <div class="task-item">Connecter le FXML au Controller (fx:controller)</div>
+          <div class="task-item">Créer <code>RegisterView.fxml</code> avec champ confirm + avertissement irrécupérabilité</div>
+          <div class="meet-bar">🔄 Sync 30 min avec B et C — vérifier que le projet compile pour tout le monde</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Implémenter <code>decrypt()</code> avec extraction IV (12 premiers bytes)</div>
+          <div class="task-item">Implémenter <code>deriveKey()</code> avec PBKDF2WithHmacSHA256 (100 000 iter)</div>
+          <div class="task-item">Tester manuellement encrypt → decrypt dans un main de test</div>
+          <div class="meet-bar">🔄 Sync 30 min — vérifier compilation commune</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-db">BASE DE DONNÉES</div>
+          <div class="task-item">Créer <code>UserRepository.java</code> extends JpaRepository avec <code>findByEmail()</code></div>
+          <div class="task-item">Créer <code>CredentialRepository.java</code> avec <code>findAllByUserId()</code></div>
+          <div class="task-item">Vérifier que Hibernate crée vault.db au démarrage (<code>mvn javafx:run</code>)</div>
+          <div class="meet-bar">🔄 Sync 30 min</div>
+        </div>
+
+        <!-- JEUDI -->
+        <div class="day-label"><span class="dn">Jeu</span>J4</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Créer <code>RegisterController.java</code> avec @FXML handleRegister()</div>
+          <div class="task-item">Implémenter la navigation de scène : Login ↔ Register (FXMLLoader)</div>
+          <div class="task-item">Ajouter CSS minimal : padding, fonts, couleurs de base</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Créer <code>AuthService.java</code> avec squelette</div>
+          <div class="task-item">Implémenter <code>register()</code> : Argon2id hash + Arrays.fill(password, '\0')</div>
+          <div class="task-item">Implémenter <code>login()</code> : argon2.verify() + dérivation clé AES si OK</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-db">BASE DE DONNÉES</div>
+          <div class="task-item">Créer le dossier <code>~/.lockbox/</code> au démarrage (Files.createDirectories)</div>
+          <div class="task-item">Ouvrir vault.db dans DB Browser → vérifier tables users et credentials</div>
+          <div class="task-item">Écrire premier test JUnit : <code>CryptoServiceTest</code> — squelette + import</div>
+        </div>
+
+        <!-- VENDREDI -->
+        <div class="day-label"><span class="dn">Ven</span>J5</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Brancher LoginController sur AuthService (@Autowired)</div>
+          <div class="task-item">Afficher message d'erreur si login échoue (Label rouge)</div>
+          <div class="task-item">Brancher RegisterController sur AuthService</div>
+          <div class="meet-bar">🔄 Réunion fin de semaine — démo partielle de ce qui marche</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Corriger les bugs trouvés en intégration avec A et C</div>
+          <div class="task-item">Générer le sel aléatoire (16 bytes SecureRandom) dans register()</div>
+          <div class="task-item">Vérifier qu'un hash Argon2id apparaît dans DB Browser, pas le mdp</div>
+          <div class="meet-bar">🔄 Réunion fin de semaine</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-test">TEST</div>
+          <div class="task-item">Écrire <code>CryptoServiceTest</code> : test round-trip encrypt → decrypt</div>
+          <div class="task-item">Écrire test IV unique : deux encrypt du même texte donnent résultats différents</div>
+          <div class="task-item">Lancer <code>mvn test</code> → BUILD SUCCESS requis avant Semaine 2</div>
+          <div class="meet-bar">🔄 Réunion fin de semaine</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEMAINE 2 -->
+    <div class="week-block">
+      <div class="week-header">
+        <div class="week-num">S2</div>
+        <div class="week-theme">🔗 Intégration · Connexion complète · Tests Phase 1</div>
+        <div class="week-days">Lundi → Vendredi</div>
+      </div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <div class="day-label"><span class="dn">Lun</span>J6</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Améliorer RegisterView : indicateur de force mdp (barre ProgressBar simple)</div>
+          <div class="task-item">Ajouter validation formulaires : champs vides, email invalide</div>
+          <div class="task-item">Créer <code>styles.css</code> : variables couleur, typographie, boutons stylisés</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Intégration complète AuthService ↔ UserRepository (injection Spring)</div>
+          <div class="task-item">Gérer le cas utilisateur inexistant (Optional.empty → exception claire)</div>
+          <div class="task-item">Documenter CryptoService.java avec Javadoc (/** … */)</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-test">TEST</div>
+          <div class="task-item">Écrire <code>AuthServiceTest</code> avec Mockito : mock UserRepository</div>
+          <div class="task-item">Test : register() → hash Argon2id stocké (pas le mdp brut)</div>
+          <div class="task-item">Test : login() avec bon mdp → retourne SecretKey non nulle</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Mar</span>J7</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Créer vue de transition (Splash screen 1.5s au démarrage)</div>
+          <div class="task-item">Ajouter FadeTransition entre login et écran suivant</div>
+          <div class="task-item">Tester l'application end-to-end : inscription → connexion → pas de crash</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Écrire <code>AuthServiceTest</code> : login() avec mauvais mdp → exception</div>
+          <div class="task-item">Vérifier effacement mémoire : Arrays.fill(password, '\0') après usage</div>
+          <div class="task-item">Documenter AuthService.java avec Javadoc</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-db">BASE DE DONNÉES</div>
+          <div class="task-item">Vérifier DB Browser : colonnes ciphertext et iv bien en BLOB</div>
+          <div class="task-item">Créer script de vérification : insérer credential test, vérifier que c'est illisible</div>
+          <div class="task-item">Documenter User.java et Credential.java avec Javadoc</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Mer</span>J8</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Préparer le squelette de DashboardView.fxml (vide pour l'instant)</div>
+          <div class="task-item">Brancher LoginController : succès → rediriger vers DashboardView</div>
+          <div class="task-item">Passer la SecretKey au DashboardController via un SessionManager</div>
+          <div class="meet-bar">🔄 Sync intégration — test du flux complet ensemble</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Créer <code>SessionManager.java</code> @Component : stocke la SecretKey en mémoire</div>
+          <div class="task-item">Méthode <code>clearSession()</code> : Arrays.fill(keyBytes, 0) + key = null</div>
+          <div class="task-item">Test SessionManager : key null après clearSession()</div>
+          <div class="meet-bar">🔄 Sync intégration</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-db">BASE DE DONNÉES</div>
+          <div class="task-item">Résoudre les problèmes de démarrage SQLite (chemin, permissions)</div>
+          <div class="task-item">Lancer <code>mvn test</code> → vérifier que tous les tests passent</div>
+          <div class="task-item">Rapport de couverture JaCoCo basique (mvn jacoco:report)</div>
+          <div class="meet-bar">🔄 Sync intégration</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Jeu</span>J9</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Corriger les bugs d'interface trouvés lors de la sync</div>
+          <div class="task-item">Améliorer CSS : boutons hover, focus visible, messages erreur</div>
+          <div class="task-item">Préparer la démo Phase 1 (script de présentation)</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Corriger bugs AuthService / CryptoService trouvés en intégration</div>
+          <div class="task-item">Vérifier que SecretKey n'apparaît jamais dans les logs</div>
+          <div class="task-item">Préparer démo : montrer hash Argon2id dans DB Browser</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-test">TEST</div>
+          <div class="task-item">Corriger les tests qui échouent</div>
+          <div class="task-item">Ajouter test : login avec mauvais mdp → 401</div>
+          <div class="task-item">Vérifier mvn clean test → BUILD SUCCESS pour tous les tests</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Ven</span>J10</div>
+        <div class="day-cell">
+          <div class="tag t-ui">UI</div>
+          <div class="task-item">Démo complète Phase 1 : inscription → connexion → écran suivant vide</div>
+          <div class="task-item">Faire la liste des points UI à améliorer en Phase 2</div>
+          <div class="task-item">Commencer à lire doc ObservableList/FilteredList pour Phase 2</div>
+          <div class="meet-bar">🔄 Réunion bilan Phase 1 + planification Phase 2</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Démo sécurité : montrer DB Browser avec hash vs mdp clair</div>
+          <div class="task-item">Commencer à lire sur GeneratorService (SecureRandom + zxcvbn)</div>
+          <div class="task-item">Documenter le flux de sécurité dans un README.md</div>
+          <div class="meet-bar">🔄 Réunion bilan Phase 1</div>
+        </div>
+        <div class="day-cell">
+          <div class="tag t-test">TEST</div>
+          <div class="task-item">mvn test → BUILD SUCCESS obligatoire aujourd'hui</div>
+          <div class="task-item">Pousser le code sur Git avec tag v1.0-phase1</div>
+          <div class="task-item">Documenter les dépendances ajoutées dans pom.xml</div>
+          <div class="meet-bar">🔄 Réunion bilan Phase 1</div>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="livrable">✅ Livrable Phase 1 : <code>mvn javafx:run</code> ouvre la fenêtre · Inscription + connexion fonctionnelles · Hash Argon2id en DB · CryptoServiceTest vert · Git tag v1.0-phase1</div>
+      </div>
+    </div>
+  </div><!-- /week-view ph1 -->
+
+  <!-- VUE PERSONNE ph1 -->
+  <div id="person-view" class="person-view">
+    <div class="pv-toggle">
+      <div class="pv-btn a1" onclick="showPerson('p1',this)">A — JavaFX</div>
+      <div class="pv-btn" onclick="showPerson('p2',this)" style="border-color:var(--p2)">B — Sécurité</div>
+      <div class="pv-btn" onclick="showPerson('p3',this)" style="border-color:var(--p3)">C — Base de données</div>
+    </div>
+
+    <!-- PERSONNE A -->
+    <div id="p1" class="person-timeline active">
+      <div class="pt-week">
+        <div class="pt-whead"><div class="pt-wnum">Semaine 1</div><div class="pt-wtitle">Setup + Login + Register UI</div></div>
+        <div class="pt-days">
+          <div class="pt-day"><div class="pt-dname">Lundi J1</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Installer IntelliJ IDEA + SceneBuilder + Java 21</div>
+            <div class="pt-task p1-color">Créer le projet Maven avec archetype javafx-archetype-fxml</div>
+            <div class="pt-task p1-color">Vérifier que <code>mvn javafx:run</code> ouvre une fenêtre</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mardi J2</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Créer la structure des packages MVC dans src/main/java/com/lockbox/</div>
+            <div class="pt-task p1-color">Créer LockBoxApp.java extends Application (point d'entrée)</div>
+            <div class="pt-task p1-color">Créer LoginView.fxml dans SceneBuilder : VBox + email + PasswordField + bouton</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mercredi J3</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Créer LoginController.java avec @FXML emailField, passwordField, handleLogin()</div>
+            <div class="pt-task p1-color">Connecter LoginView.fxml → LoginController (fx:controller=…)</div>
+            <div class="pt-task p1-color">Créer RegisterView.fxml avec champs + avertissement irrecupérabilité (Label rouge)</div>
+            <div class="sync">🔄 Sync 30 min équipe — vérifier que tout compile</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Jeudi J4</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Créer RegisterController.java avec handleRegister()</div>
+            <div class="pt-task p1-color">Implémenter navigation Login ↔ Register (FXMLLoader.load + Stage.setScene)</div>
+            <div class="pt-task p1-color">Ajouter CSS minimal dans styles.css : padding, couleurs, font DM Sans</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Vendredi J5</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Brancher LoginController sur AuthService via @Autowired</div>
+            <div class="pt-task p1-color">Afficher Label d'erreur rouge si login échoue</div>
+            <div class="pt-task p1-color">Brancher RegisterController sur AuthService</div>
+            <div class="sync">🔄 Réunion bilan semaine 1 — démo partielle</div>
+          </div></div>
+        </div>
+      </div>
+      <div class="pt-week">
+        <div class="pt-whead"><div class="pt-wnum">Semaine 2</div><div class="pt-wtitle">Intégration + Dashboard squelette + Démo</div></div>
+        <div class="pt-days">
+          <div class="pt-day"><div class="pt-dname">Lundi J6</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Ajouter barre ProgressBar indicateur de force mdp dans RegisterView</div>
+            <div class="pt-task p1-color">Ajouter validation formulaires : champs vides → message d'erreur</div>
+            <div class="pt-task p1-color">Améliorer CSS : boutons stylisés (background, radius, hover)</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mardi J7</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Créer SplashView.fxml : logo + animation FadeTransition 1.5s</div>
+            <div class="pt-task p1-color">Tester flux complet : splash → login → inscription → connexion</div>
+            <div class="pt-task p1-color">Vérifier qu'aucune exception JavaFX n'est levée dans la console</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mercredi J8</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Créer DashboardView.fxml vide (SplitPane + placeholder texte)</div>
+            <div class="pt-task p1-color">Modifier LoginController : succès → naviguer vers DashboardView</div>
+            <div class="pt-task p1-color">Passer SecretKey au DashboardController via SessionManager (de B)</div>
+            <div class="sync">🔄 Sync intégration — tester flux complet ensemble</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Jeudi J9</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Corriger tous les bugs d'interface trouvés lors de la sync</div>
+            <div class="pt-task p1-color">Améliorer CSS : états focus (outline bleu), messages erreur cohérents</div>
+            <div class="pt-task p1-color">Préparer le script de démo Phase 1 (10 étapes à montrer)</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Vendredi J10</div><div class="pt-tasks">
+            <div class="pt-task p1-color">Démo Phase 1 : inscription → connexion → DashboardView vide → pas de crash</div>
+            <div class="pt-task p1-color">Lister les composants UI à créer en Phase 2 (DashboardView complète, AddView)</div>
+            <div class="pt-task p1-color">Lire documentation ObservableList + FilteredList JavaFX pour la Phase 2</div>
+            <div class="sync">🔄 Réunion bilan Phase 1 + planification Phase 2</div>
+          </div></div>
+        </div>
+      </div>
+    </div><!-- /p1 -->
+
+    <!-- PERSONNE B -->
+    <div id="p2" class="person-timeline">
+      <div class="pt-week">
+        <div class="pt-whead"><div class="pt-wnum">Semaine 1</div><div class="pt-wtitle">CryptoService + AuthService</div></div>
+        <div class="pt-days">
+          <div class="pt-day"><div class="pt-dname">Lundi J1</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Installer IntelliJ IDEA + Java 21</div>
+            <div class="pt-task p2-color">Cloner le projet créé par A</div>
+            <div class="pt-task p2-color">Lire l'article Baeldung AES + OWASP Password Cheat Sheet (2h)</div>
+            <div class="pt-task p2-color">Faire un schéma papier du flux : mdp → Argon2 → hash / mdp → PBKDF2 → clé AES</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mardi J2</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Créer CryptoService.java avec squelette @Service</div>
+            <div class="pt-task p2-color">Implémenter generateIV() : SecureRandom.nextBytes(12)</div>
+            <div class="pt-task p2-color">Implémenter encrypt() : Cipher.getInstance("AES/GCM/NoPadding") + IV + doFinal()</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mercredi J3</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Implémenter decrypt() : extraire IV (12 premiers bytes) + Cipher.DECRYPT_MODE</div>
+            <div class="pt-task p2-color">Implémenter deriveKey() : SecretKeyFactory PBKDF2WithHmacSHA256 + 100_000 iter</div>
+            <div class="pt-task p2-color">Tester manuellement encrypt("test") → decrypt → "test" dans un main</div>
+            <div class="sync">🔄 Sync 30 min équipe</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Jeudi J4</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Créer AuthService.java avec squelette @Service</div>
+            <div class="pt-task p2-color">Implémenter register() : Argon2Factory.create(ARGON2id).hash(3, 65536, 4, password)</div>
+            <div class="pt-task p2-color">Implémenter Arrays.fill(password, '\0') juste après usage dans register()</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Vendredi J5</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Implémenter login() : argon2.verify(hash, password) → exception si false</div>
+            <div class="pt-task p2-color">Générer sel aléatoire 16 bytes dans register() + stocker en DB</div>
+            <div class="pt-task p2-color">Vérifier dans DB Browser : colonne passwordHash commence par $argon2id$</div>
+            <div class="sync">🔄 Réunion bilan semaine 1</div>
+          </div></div>
+        </div>
+      </div>
+      <div class="pt-week">
+        <div class="pt-whead"><div class="pt-wnum">Semaine 2</div><div class="pt-wtitle">SessionManager + Intégration + Documentation</div></div>
+        <div class="pt-days">
+          <div class="pt-day"><div class="pt-dname">Lundi J6</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Intégration AuthService ↔ UserRepository (injection @Autowired)</div>
+            <div class="pt-task p2-color">Gérer Optional.empty() dans login() → throw RuntimeException avec message clair</div>
+            <div class="pt-task p2-color">Ajouter Javadoc à toutes les méthodes de CryptoService</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mardi J7</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Écrire CryptoServiceTest : test round-trip encrypt → decrypt</div>
+            <div class="pt-task p2-color">Écrire test IV unique : deux encrypt du même texte → résultats différents (assertFalse(Arrays.equals))</div>
+            <div class="pt-task p2-color">Lancer mvn test → les 2 tests doivent passer</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mercredi J8</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Créer SessionManager.java @Component : SecretKey keyInMemory</div>
+            <div class="pt-task p2-color">Méthodes : setKey(SecretKey), getKey(), clearSession() avec Arrays.fill</div>
+            <div class="pt-task p2-color">Test SessionManager : getKey() null après clearSession()</div>
+            <div class="sync">🔄 Sync intégration</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Jeudi J9</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Écrire AuthServiceTest avec Mockito.mock(UserRepository.class)</div>
+            <div class="pt-task p2-color">Test : register() → passwordHash commence par "$argon2id$" en DB</div>
+            <div class="pt-task p2-color">Test : login() bon mdp → SecretKey non null · mauvais mdp → exception</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Vendredi J10</div><div class="pt-tasks">
+            <div class="pt-task p2-color">Corriger bugs trouvés dans les tests</div>
+            <div class="pt-task p2-color">Écrire README.md section sécurité : expliquer Argon2id + AES-256-GCM</div>
+            <div class="pt-task p2-color">Lire doc zxcvbn-java pour Phase 2 (GeneratorService)</div>
+            <div class="sync">🔄 Réunion bilan Phase 1</div>
+          </div></div>
+        </div>
+      </div>
+    </div><!-- /p2 -->
+
+    <!-- PERSONNE C -->
+    <div id="p3" class="person-timeline">
+      <div class="pt-week">
+        <div class="pt-whead"><div class="pt-wnum">Semaine 1</div><div class="pt-wtitle">pom.xml + Entités JPA + Repositories</div></div>
+        <div class="pt-days">
+          <div class="pt-day"><div class="pt-dname">Lundi J1</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Installer IntelliJ IDEA + DB Browser for SQLite + Java 21</div>
+            <div class="pt-task p3-color">Cloner le projet créé par A</div>
+            <div class="pt-task p3-color">Configurer pom.xml : ajouter Spring Boot parent + TOUTES les dépendances (JavaFX, Spring JPA, SQLite, Argon2, zxcvbn, JUnit)</div>
+            <div class="pt-task p3-color">Créer module-info.java avec tous les requires</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mardi J2</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Créer application.properties : SQLite datasource, Hibernate ddl-auto=update</div>
+            <div class="pt-task p3-color">Créer User.java @Entity : id UUID, email @Column(unique), passwordHash, salt @Lob, createdAt</div>
+            <div class="pt-task p3-color">Créer Credential.java @Entity : id, userId, label, ciphertext @Lob, iv @Lob, category, createdAt</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mercredi J3</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Créer UserRepository extends JpaRepository&lt;User, Long&gt; + findByEmail(String)</div>
+            <div class="pt-task p3-color">Créer CredentialRepository extends JpaRepository + findAllByUserId(Long)</div>
+            <div class="pt-task p3-color">Lancer mvn javafx:run → vérifier que vault.db est créé dans ~/.lockbox/</div>
+            <div class="sync">🔄 Sync 30 min équipe</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Jeudi J4</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Ouvrir vault.db dans DB Browser → vérifier que les tables users et credentials existent</div>
+            <div class="pt-task p3-color">Vérifier colonnes : types BLOB pour ciphertext/iv/salt, TEXT pour email, UNIQUE sur email</div>
+            <div class="pt-task p3-color">Préparer squelette CryptoServiceTest.java dans src/test/java/</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Vendredi J5</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Écrire CryptoServiceTest : @SpringBootTest + @Autowired CryptoService</div>
+            <div class="pt-task p3-color">Écrire test 1 : encrypt → decrypt retourne texte original (assertEquals)</div>
+            <div class="pt-task p3-color">Écrire test 2 : deux encrypt produisent IVs différents (assertFalse(Arrays.equals))</div>
+            <div class="pt-task p3-color">Lancer mvn test → BUILD SUCCESS</div>
+            <div class="sync">🔄 Réunion bilan semaine 1</div>
+          </div></div>
+        </div>
+      </div>
+      <div class="pt-week">
+        <div class="pt-whead"><div class="pt-wnum">Semaine 2</div><div class="pt-wtitle">Tests AuthService + Git tag + Documentation</div></div>
+        <div class="pt-days">
+          <div class="pt-day"><div class="pt-dname">Lundi J6</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Écrire AuthServiceTest avec Mockito : when(userRepo.findByEmail("x")).thenReturn(Optional.of(user))</div>
+            <div class="pt-task p3-color">Test login() bon mot de passe → SecretKey non nulle</div>
+            <div class="pt-task p3-color">Test login() mauvais mot de passe → exception levée</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mardi J7</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Vérifier DB Browser après inscription : passwordHash jamais en clair</div>
+            <div class="pt-task p3-color">Vérifier colonnes salt (BLOB 16 bytes) et createdAt (TIMESTAMP)</div>
+            <div class="pt-task p3-color">Documenter User.java et Credential.java avec Javadoc complète</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Mercredi J8</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Corriger les problèmes de démarrage SQLite (créer ~/.lockbox/ si absent)</div>
+            <div class="pt-task p3-color">Ajouter plugin JaCoCo dans pom.xml + générer rapport (mvn jacoco:report)</div>
+            <div class="pt-task p3-color">Vérifier que la couverture de tests atteint au moins 50% sur CryptoService</div>
+            <div class="sync">🔄 Sync intégration</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Jeudi J9</div><div class="pt-tasks">
+            <div class="pt-task p3-color">Corriger tous les tests qui échouent</div>
+            <div class="pt-task p3-color">Ajouter test : login() avec email inexistant → exception claire</div>
+            <div class="pt-task p3-color">Documenter UserRepository et CredentialRepository</div>
+          </div></div>
+          <div class="pt-day"><div class="pt-dname">Vendredi J10</div><div class="pt-tasks">
+            <div class="pt-task p3-color">mvn clean test → BUILD SUCCESS obligatoire</div>
+            <div class="pt-task p3-color">git tag v1.0-phase1 + git push --tags</div>
+            <div class="pt-task p3-color">Documenter les dépendances pom.xml dans README.md</div>
+            <div class="sync">🔄 Réunion bilan Phase 1</div>
+          </div></div>
+        </div>
+      </div>
+    </div><!-- /p3 -->
+  </div><!-- /person-view ph1 -->
+</div><!-- /ph1 -->
+
+<!-- ═══════════════════════════════════
+     PHASE 2
+═══════════════════════════════════ -->
+<div id="ph2" class="panel">
+  <div id="week-view" class="person-view active">
+    <div class="week-block">
+      <div class="week-header">
+        <div class="week-num">S3</div>
+        <div class="week-theme">🖥 Dashboard · Affichage credentials · CRUD</div>
+        <div class="week-days">Lundi → Vendredi</div>
+      </div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <div class="day-label"><span class="dn">Lun</span>J11</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Construire DashboardView.fxml complet : SplitPane + ListView + panneau détail</div>
+          <div class="task-item">Créer cellule personnalisée pour ListView (logo initiale + nom + login masqué)</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Créer CredentialService.java : save() chiffre avant INSERT, findAll() déchiffre après SELECT</div>
+          <div class="task-item">Injecter CryptoService + SessionManager dans CredentialService</div>
+        </div>
+        <div class="day-cell"><div class="tag t-db">BD</div>
+          <div class="task-item">Vérifier CredentialRepository : findAllByUserId() retourne bien la liste</div>
+          <div class="task-item">Créer un credential de test dans DB Browser → vérifier champ ciphertext = BLOB illisible</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Mar</span>J12</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">DashboardController : charger ObservableList depuis CredentialService au démarrage</div>
+          <div class="task-item">Binder ObservableList à la ListView</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Implémenter GeneratorService : SecureRandom + charset paramétrable</div>
+          <div class="task-item">Charsets : majuscules, minuscules, chiffres, symboles — au moins 1 de chaque si activé</div>
+        </div>
+        <div class="day-cell"><div class="tag t-test">TEST</div>
+          <div class="task-item">Écrire CredentialServiceTest avec Mockito : save() chiffre avant, findAll() déchiffre</div>
+          <div class="task-item">Vérifier que ciphertext en DB ≠ texte original</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Mer</span>J13</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Barre de recherche : FilteredList + Predicate sur label et login</div>
+          <div class="task-item">Chips catégories : ToggleGroup (Tous / Banque / Email / Shopping)</div>
+          <div class="meet-bar">🔄 Sync intégration CRUD</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Intégrer zxcvbn-java : Zxcvbn.measure(password).getScore() → 0 à 4</div>
+          <div class="task-item">Exposer getScore(String password) dans GeneratorService</div>
+          <div class="meet-bar">🔄 Sync intégration</div>
+        </div>
+        <div class="day-cell"><div class="tag t-db">BD</div>
+          <div class="task-item">Ajouter deleteById() + update() dans CredentialRepository</div>
+          <div class="task-item">Vérifier suppressions en cascade (si User supprimé → ses Credentials supprimés)</div>
+          <div class="meet-bar">🔄 Sync intégration</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Jeu</span>J14</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Créer AddCredentialView.fxml : service, URL, login, mdp, notes, catégorie</div>
+          <div class="task-item">Toggle PasswordField ↔ TextField (Eye icon Ikonli)</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Implémenter auto-clear presse-papier 30s : ScheduledExecutorService + Platform.runLater</div>
+          <div class="task-item">Toast JavaFX : "Copié · effacement dans 30s" (Stage transparent)</div>
+        </div>
+        <div class="day-cell"><div class="tag t-test">TEST</div>
+          <div class="task-item">Écrire GeneratorServiceTest : entropie, unicité 1000 tirages, charsets respectés</div>
+          <div class="task-item">Lancer mvn test → tous les tests verts</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Ven</span>J15</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Intégrer barre score zxcvbn dans AddCredentialView (ProgressBar 4 couleurs)</div>
+          <div class="task-item">Bouton "Copier" dans panneau détail : Clipboard.getSystemClipboard().setString()</div>
+          <div class="meet-bar">🔄 Bilan semaine 3</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Tester GeneratorService : générer 100 mots de passe → vérifier tous forts (score ≥ 3)</div>
+          <div class="task-item">Documenter GeneratorService avec Javadoc</div>
+          <div class="meet-bar">🔄 Bilan semaine 3</div>
+        </div>
+        <div class="day-cell"><div class="tag t-db">BD</div>
+          <div class="task-item">Vérifier dans DB Browser : tous les credentials stockés sont des BLOBs illisibles</div>
+          <div class="task-item">Snapshot Git : git commit -m "Phase 2 CRUD + Generator"</div>
+          <div class="meet-bar">🔄 Bilan semaine 3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-block">
+      <div class="week-header">
+        <div class="week-num">S4</div>
+        <div class="week-theme">✏️ CRUD complet · Générateur UI · Tests intégration</div>
+        <div class="week-days">Lundi → Vendredi</div>
+      </div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <div class="day-label"><span class="dn">Lun</span>J16</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">AddCredentialController : handleSave() appelle CredentialService.save()</div>
+          <div class="task-item">Mettre à jour ObservableList après ajout (FX thread)</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Créer GeneratorView.fxml : Slider longueur + 4 CheckBox + mode radio + ProgressBar</div>
+          <div class="task-item">GeneratorController : bind Slider → label longueur, CheckBox → charset actif</div>
+        </div>
+        <div class="day-cell"><div class="tag t-db">BD</div>
+          <div class="task-item">Écrire tests intégration end-to-end : ajouter credential → retrouver déchiffré</div>
+          <div class="task-item">Vérifier que CredentialRepository.findAllByUserId() retourne les bonnes entrées</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Mar</span>J17</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Formulaire d'édition : pré-remplir les champs (déchiffrement en mémoire)</div>
+          <div class="task-item">Dialogue confirmation suppression : Alert.AlertType.CONFIRMATION</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Bouton "Régénérer" dans GeneratorView : SecureRandom + affichage JetBrains Mono</div>
+          <div class="task-item">Bouton "Utiliser ce mot de passe" : inject dans AddCredentialView (callback)</div>
+        </div>
+        <div class="day-cell"><div class="tag t-test">TEST</div>
+          <div class="task-item">Tester suppression : deleteById → vérifier que credential absent en DB</div>
+          <div class="task-item">Tester update : modifier un champ → vérifier nouveau ciphertext en DB</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Mer</span>J18</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Améliorer panneau détail : révéler mdp au clic (PasswordField toggle)</div>
+          <div class="task-item">Barre de statut : nb credentials + "Session ouverte depuis Xmin"</div>
+          <div class="meet-bar">🔄 Sync Phase 2 — démo CRUD complet</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Vérifier auto-clear presse-papier : copier un mdp → attendre 30s → coller → vide</div>
+          <div class="task-item">Corriger tout bug trouvé lors de la sync</div>
+          <div class="meet-bar">🔄 Sync Phase 2</div>
+        </div>
+        <div class="day-cell"><div class="tag t-db">BD</div>
+          <div class="task-item">Lancer mvn test → tous les tests verts</div>
+          <div class="task-item">Rapport JaCoCo → couverture CredentialService ≥ 70%</div>
+          <div class="meet-bar">🔄 Sync Phase 2</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Jeu</span>J19</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Corriger bugs UI trouvés lors de la démo</div>
+          <div class="task-item">Affiner CSS : cards credentials hover, focus, selected state</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Corriger bugs GeneratorService / toast</div>
+          <div class="task-item">S'assurer que la clé AES n'apparaît jamais dans les logs</div>
+        </div>
+        <div class="day-cell"><div class="tag t-test">TEST</div>
+          <div class="task-item">Écrire test "presse-papier vidé après 30s" (simulé)</div>
+          <div class="task-item">Documenter CredentialService + CredentialRepository</div>
+        </div>
+
+        <div class="day-label"><span class="dn">Ven</span>J20</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div>
+          <div class="task-item">Démo Phase 2 : inscription → login → ajouter credential → copier → générer → supprimer</div>
+          <div class="task-item">Lister les tâches Phase 3 (verrouillage, export)</div>
+          <div class="meet-bar">🔄 Bilan Phase 2 + planification Phase 3</div>
+        </div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div>
+          <div class="task-item">Démo sécurité : DB Browser → tous les credentials = BLOBs illisibles</div>
+          <div class="task-item">Lire doc java-totp (RFC 6238) pour Phase 3</div>
+          <div class="meet-bar">🔄 Bilan Phase 2</div>
+        </div>
+        <div class="day-cell"><div class="tag t-db">BD</div>
+          <div class="task-item">git tag v2.0-phase2 + push</div>
+          <div class="task-item">mvn clean test → BUILD SUCCESS obligatoire</div>
+          <div class="meet-bar">🔄 Bilan Phase 2</div>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="livrable">✅ Livrable Phase 2 : CRUD complet · credentials en BLOB dans DB · générateur opérationnel avec score zxcvbn · presse-papier auto-effacé · git tag v2.0-phase2</div>
+      </div>
+    </div>
+  </div>
+  <div id="person-view" class="person-view" style="padding:20px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-align:center;color:var(--muted);font-size:14px">
+    ℹ️ Activez "Vue semaine" pour la Phase 2 — la vue par personne est disponible en Phase 1.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PHASE 3
+═══════════════════════════════════ -->
+<div id="ph3" class="panel">
+  <div id="week-view" class="person-view active">
+    <div class="week-block">
+      <div class="week-header"><div class="week-num">S5</div><div class="week-theme">🔐 Verrouillage auto · Export · Import</div><div class="week-days">Lundi → Vendredi</div></div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <div class="day-label"><span class="dn">Lun</span>J21</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Créer LockScreenView.fxml : fingerprint icon + email masqué + PasswordField</div><div class="task-item">LockScreenController : handleUnlock() → AuthService.login() → retour Dashboard</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">Créer SessionService : Timeline JavaFX avec KeyFrame(Duration.minutes(N))</div><div class="task-item">Intercepteur stage.addEventFilter(InputEvent.ANY) → timer.playFromStart()</div></div>
+        <div class="day-cell"><div class="tag t-db">BD</div><div class="task-item">Créer table access_log : userId, timestamp, success, attempts (nouvelle entité JPA)</div><div class="task-item">Créer AccessLogRepository + enregistrer chaque tentative de login</div></div>
+
+        <div class="day-label"><span class="dn">Mar</span>J22</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">FadeTransition dashboard → LockScreen au verrouillage</div><div class="task-item">Indicator visuel "Verrouillage dans Xmin" dans barre de statut</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">Au verrouillage : SessionManager.clearSession() + ObservableList.clear()</div><div class="task-item">Tester : session verrouillée → SecretKey == null (vérif mémoire)</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">Test SessionService : timer expire → isLocked() == true</div><div class="task-item">Test clearSession() : SecretKey nulle après appel</div></div>
+
+        <div class="day-label"><span class="dn">Mer</span>J23</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Créer ExportImportView dans SettingsView : bouton Export + bouton Import</div><div class="task-item">FileChooser JavaFX : filtre *.lockbox pour export, *.lockbox + *.csv pour import</div><div class="meet-bar">🔄 Sync verrouillage + export</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">Créer ExportService : credentials → JSON → AES-256-GCM → fichier .lockbox</div><div class="task-item">HMAC-SHA256 sur le JSON avant chiffrement : Mac.getInstance("HmacSHA256")</div><div class="meet-bar">🔄 Sync</div></div>
+        <div class="day-cell"><div class="tag t-db">BD</div><div class="task-item">Import CSV : ajouter Apache Commons CSV dans pom.xml + parser CSVParser</div><div class="task-item">ImportService : lire CSV → créer Credential → chiffrer → sauvegarder</div><div class="meet-bar">🔄 Sync</div></div>
+
+        <div class="day-label"><span class="dn">Jeu</span>J24</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">ProgressIndicator pendant export/import (Task&lt;Void&gt; JavaFX)</div><div class="task-item">Prévisualisation import : TableView avec 5 premières lignes avant validation</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">ImportService .lockbox : vérifier HMAC avant déchiffrement (fail-fast si corrompu)</div><div class="task-item">Structure fichier .lockbox : [12 bytes IV] + [32 bytes HMAC] + [N bytes ciphertext]</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">ExportServiceTest : export → import → vérifier intégrité bit à bit</div><div class="task-item">Test HMAC tamper : modifier 1 byte → import doit échouer avec erreur claire</div></div>
+
+        <div class="day-label"><span class="dn">Ven</span>J25</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Intégrer délai verrouillage dans SettingsView : ComboBox 2/5/10/15/30 min</div><div class="task-item">Tester verrouillage manuel via bouton "Verrouiller" dans la sidebar</div><div class="meet-bar">🔄 Bilan semaine 5</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">Corriger bugs ExportService / ImportService</div><div class="task-item">Lire doc dev.samstevens.totp pour Semaine 6</div><div class="meet-bar">🔄 Bilan semaine 5</div></div>
+        <div class="day-cell"><div class="tag t-db">BD</div><div class="task-item">mvn test → tous les tests verts</div><div class="task-item">Rapport JaCoCo → couverture globale ≥ 65%</div><div class="meet-bar">🔄 Bilan semaine 5</div></div>
+      </div>
+    </div>
+
+    <div class="week-block">
+      <div class="week-header"><div class="week-num">S6</div><div class="week-theme">🔑 2FA TOTP · Blocage tentatives · Finalisation sécurité</div><div class="week-days">Lundi → Vendredi</div></div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <div class="day-label"><span class="dn">Lun</span>J26</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Créer SetupTotpView.fxml : ImageView QR code 200×200 + champ code 6 chiffres</div><div class="task-item">Toggle 2FA dans SettingsView avec re-confirmation mdp maître</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">Ajouter dépendance dev.samstevens.totp dans pom.xml</div><div class="task-item">TotpService : SecretGenerator.generate() + otpauth:// URI</div></div>
+        <div class="day-cell"><div class="tag t-db">BD</div><div class="task-item">Ajouter colonne totpSecret (TEXT chiffré) dans User entity</div><div class="task-item">Ajouter colonne totpEnabled (BOOLEAN) + 8 colonnes recovery codes</div></div>
+
+        <div class="day-label"><span class="dn">Mar</span>J27</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Afficher QR code : ZXing → byte[] PNG → Image JavaFX → ImageView</div><div class="task-item">SetupTotpController : valider premier code 6 chiffres pour activer 2FA</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">TotpService.verify(String code, String secret) avec window=1 (±30s)</div><div class="task-item">Générer 8 codes de récupération one-time chiffrés AES avant stockage</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">TotpServiceTest : génération secret + vérification code + expiration</div><div class="task-item">Test code de récupération : usage unique → désactivé après utilisation</div></div>
+
+        <div class="day-label"><span class="dn">Mer</span>J28</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Ajouter champ TOTP dans LoginController si 2FA activé</div><div class="task-item">Afficher "X tentatives restantes" dans LockScreenView</div><div class="meet-bar">🔄 Sync 2FA + blocage</div></div>
+        <div class="day-cell"><div class="tag t-sec">SÉCURITÉ</div><div class="task-item">Blocage après 5 tentatives : délai exponentiel dans AuthService (1/2/4/8/16 min)</div><div class="task-item">Stocker timestamp du blocage en DB + vérifier à chaque login</div><div class="meet-bar">🔄 Sync</div></div>
+        <div class="day-cell"><div class="tag t-db">BD</div><div class="task-item">Vérifier totpSecret chiffré (BLOB) en DB — jamais en clair</div><div class="task-item">Vérifier access_log : tentatives enregistrées correctement</div><div class="meet-bar">🔄 Sync</div></div>
+
+        <div class="day-label"><span class="dn">Jeu</span>J29</div>
+        <div class="day-cell"><div class="task-item">Corriger tous les bugs TOTP / verrouillage trouvés</div><div class="task-item">Tester TOTP avec Google Authenticator réel sur téléphone</div></div>
+        <div class="day-cell"><div class="task-item">Corriger AuthService blocage : test avec 5 mauvais mdp → blocage activé</div><div class="task-item">Documenter TotpService + ExportService avec Javadoc</div></div>
+        <div class="day-cell"><div class="task-item">mvn test → tous les tests verts y compris TotpServiceTest</div><div class="task-item">Couverture JaCoCo ≥ 70% requis pour passer Phase 4</div></div>
+
+        <div class="day-label"><span class="dn">Ven</span>J30</div>
+        <div class="day-cell"><div class="task-item">Démo Phase 3 : verrouillage → re-auth → export → import → 2FA setup</div><div class="meet-bar">🔄 Bilan Phase 3 + planification Phase 4</div></div>
+        <div class="day-cell"><div class="task-item">Démo sécurité : HMAC tamper detection + TOTP avec vrai téléphone</div><div class="meet-bar">🔄 Bilan Phase 3</div></div>
+        <div class="day-cell"><div class="task-item">git tag v3.0-phase3 + push · mvn test BUILD SUCCESS</div><div class="meet-bar">🔄 Bilan Phase 3</div></div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="livrable">✅ Livrable Phase 3 : verrouillage auto + clé effacée · export/import .lockbox avec HMAC · 2FA TOTP + QR code · blocage 5 tentatives · couverture JaCoCo ≥ 70% · git tag v3.0-phase3</div>
+      </div>
+    </div>
+  </div>
+  <div id="person-view" class="person-view" style="padding:20px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-align:center;color:var(--muted);font-size:14px">ℹ️ Vue par personne disponible en Phase 1.</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PHASE 4
+═══════════════════════════════════ -->
+<div id="ph4" class="panel">
+  <div id="week-view" class="person-view active">
+    <div class="week-block">
+      <div class="week-header"><div class="week-num">S7</div><div class="week-theme">🎨 CSS final · Thème sombre · Tests complets</div><div class="week-days">Lundi → Vendredi</div></div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <div class="day-label"><span class="dn">Lun</span>J31</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Refactoriser CSS : variables -fx-primary, -fx-surface, -fx-text</div><div class="task-item">Implémenter thème sombre : PseudoClass.getPseudoClass("dark") + toggle</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">Revue sécurité CryptoService : pair programming avec A</div><div class="task-item">Vérifier chaque méthode : IV unique, Arrays.fill(), pas de log sensible</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">Écrire SessionServiceTest complet : timer, lock, clearSession</div><div class="task-item">Couverture JaCoCo : identifier les méthodes non couvertes</div></div>
+
+        <div class="day-label"><span class="dn">Mar</span>J32</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Animations finales : FadeTransition entre scènes (250ms), ScaleTransition hover credentials</div><div class="task-item">Icônes Ikonli FontAwesome5 dans tous les boutons et labels</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">Écrire ExportServiceTest round-trip complet avec HMAC</div><div class="task-item">Compléter AuthServiceTest : tous les cas limites</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">Écrire tests manquants pour atteindre JaCoCo ≥ 70%</div><div class="task-item">Lancer rapport JaCoCo et analyser le résultat</div></div>
+
+        <div class="day-label"><span class="dn">Mer</span>J33</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">Toast notification final : Stage transparent, FadeIn/FadeOut, auto-dismiss 3s</div><div class="task-item">Empty state illustré : coffre vide → icône + message + bouton CTA</div><div class="meet-bar">🔄 Sync UI finale + Tests</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">TestFX : test UI login flow (type email + password + click login)</div><div class="task-item">TestFX : ajouter un credential via le formulaire</div><div class="meet-bar">🔄 Sync</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">mvn test → BUILD SUCCESS tous les tests</div><div class="task-item">Rapport JaCoCo final : confirmer ≥ 70%</div><div class="meet-bar">🔄 Sync</div></div>
+
+        <div class="day-label"><span class="dn">Jeu</span>J34</div>
+        <div class="day-cell"><div class="tag t-ui">UI</div><div class="task-item">SettingsView complète : profil / verrouillage / clipboard / thème / export / 2FA</div><div class="task-item">Corriger les derniers bugs CSS (thème sombre + clair)</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">Corriger tous les tests TestFX qui échouent</div><div class="task-item">Revue de code AuthService + CryptoService (checklist OWASP)</div></div>
+        <div class="day-cell"><div class="tag t-test">TEST</div><div class="task-item">Commencer Javadoc : générer mvn javadoc:javadoc, corriger les erreurs</div><div class="task-item">Documenter toutes les classes publiques manquantes</div></div>
+
+        <div class="day-label"><span class="dn">Ven</span>J35</div>
+        <div class="day-cell"><div class="task-item">Démo UI finale : thème sombre/clair, animations, empty state, toasts</div><div class="meet-bar">🔄 Bilan semaine 7 + planif packaging</div></div>
+        <div class="day-cell"><div class="task-item">Finaliser toutes les Javadoc des services de sécurité</div><div class="meet-bar">🔄 Bilan semaine 7</div></div>
+        <div class="day-cell"><div class="task-item">git tag v4.0-pre-packaging + mvn test BUILD SUCCESS</div><div class="meet-bar">🔄 Bilan semaine 7</div></div>
+      </div>
+    </div>
+
+    <div class="week-block">
+      <div class="week-header"><div class="week-num">S8</div><div class="week-theme">📦 jpackage · Installeurs natifs · Documentation · Démo finale</div><div class="week-days">Lundi → Vendredi</div></div>
+      <div class="day-grid">
+        <div class="dg-col-head ch-day"></div>
+        <div class="dg-col-head ch1">A — JavaFX</div>
+        <div class="dg-col-head ch2">B — Sécurité</div>
+        <div class="dg-col-head ch3">C — Base de données</div>
+
+        <div class="day-label"><span class="dn">Lun</span>J36</div>
+        <div class="day-cell"><div class="task-item">Créer icônes natives : icon.ico (256×256 Windows), icon.icns (macOS), icon.png (Linux)</div><div class="task-item">Vérifier que mvn clean package génère un JAR sans erreur</div></div>
+        <div class="day-cell"><div class="task-item">Écrire SECURITY.md : description modèle sécurité + comment signaler une faille</div><div class="task-item">Finaliser README.md section sécurité</div></div>
+        <div class="day-cell"><div class="tag t-pkg" style="background:var(--lteal);color:var(--p2d)">PACKAGING</div><div class="task-item">Ajouter jpackage-maven-plugin dans pom.xml avec configuration complète</div><div class="task-item">Premier test jpackage sur l'OS de développement</div></div>
+
+        <div class="day-label"><span class="dn">Mar</span>J37</div>
+        <div class="day-cell"><div class="task-item">Tester l'installeur sur machine vierge (sans JDK installé)</div><div class="task-item">Corriger les problèmes de chemins ou de permissions</div></div>
+        <div class="day-cell"><div class="task-item">Finaliser Javadoc : mvn javadoc:javadoc sans aucun WARNING</div><div class="task-item">Rédiger guide utilisateur (README.md) : installation + premier démarrage</div></div>
+        <div class="day-cell"><div class="task-item">jpackage → .exe Windows (si Windows dispo) + test installation</div><div class="task-item">jpackage → .deb Linux + test installation sur Ubuntu</div></div>
+
+        <div class="day-label"><span class="dn">Mer</span>J38</div>
+        <div class="day-cell"><div class="task-item">Corriger les derniers bugs trouvés lors des tests d'installation</div><div class="task-item">Préparer le script de démo finale (10 min)</div><div class="meet-bar">🔄 Répétition démo finale</div></div>
+        <div class="day-cell"><div class="task-item">Relire toute la documentation (README + SECURITY + Javadoc)</div><div class="task-item">Vérifier que la Javadoc est accessible et lisible</div><div class="meet-bar">🔄 Répétition démo</div></div>
+        <div class="day-cell"><div class="task-item">mvn test → BUILD SUCCESS final</div><div class="task-item">JaCoCo rapport final : capture d'écran pour le rendu</div><div class="meet-bar">🔄 Répétition démo</div></div>
+
+        <div class="day-label"><span class="dn">Jeu</span>J39</div>
+        <div class="day-cell"><div class="task-item">Corrections de dernière minute trouvées lors de la répétition</div><div class="task-item">S'assurer que tous les fxid sont liés dans les FXML</div></div>
+        <div class="day-cell"><div class="task-item">Dernière revue sécurité : aucun log sensible, aucune clé visible</div><div class="task-item">Vérifier DB Browser sur install fraîche : aucune donnée résiduelle</div></div>
+        <div class="day-cell"><div class="task-item">git tag v1.0.0-final + push</div><div class="task-item">Créer archive zip du projet pour rendu</div></div>
+
+        <div class="day-label"><span class="dn">Ven</span>J40</div>
+        <div class="day-cell"><div class="task-item">🎉 DÉMO FINALE client — présentation complète de l'application</div><div class="meet-bar">🎓 Présentation finale</div></div>
+        <div class="day-cell"><div class="task-item">🎉 Démo sécurité : DB Browser → BLOBs, TOTP live, export .lockbox</div><div class="meet-bar">🎓 Présentation finale</div></div>
+        <div class="day-cell"><div class="task-item">🎉 Démo packaging : installer depuis .exe / .deb sur machine vierge</div><div class="meet-bar">🎓 Présentation finale</div></div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="livrable">🎉 Livrable Final : installeur .exe/.dmg/.deb testé · mvn test BUILD SUCCESS · JaCoCo ≥ 70% · Javadoc complète · README + SECURITY.md · git tag v1.0.0-final · Démo live réussie</div>
+      </div>
+    </div>
+  </div>
+  <div id="person-view" class="person-view" style="padding:20px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-align:center;color:var(--muted);font-size:14px">ℹ️ Vue par personne disponible en Phase 1.</div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// Gestion des phases
+function showPhase(id, tab){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ph-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  // Reset view
+  const panel = document.getElementById(id);
+  panel.querySelectorAll('.person-view').forEach(v=>v.classList.remove('active'));
+  panel.querySelector('#week-view').classList.add('active');
+  document.querySelectorAll('.vt-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.vt-btn:first-child').classList.add('active');
+}
+
+// Gestion vue semaine / personne
+function setView(type, btn){
+  document.querySelectorAll('.vt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const activePanel = document.querySelector('.panel.active');
+  activePanel.querySelectorAll('.person-view').forEach(v=>v.classList.remove('active'));
+  activePanel.querySelector('#'+type+'-view').classList.add('active');
+  // Reset personne si nécessaire
+  if(type==='person'){
+    const pv = activePanel.querySelector('#person-view');
+    const timelines = pv.querySelectorAll('.person-timeline');
+    timelines.forEach(t=>t.classList.remove('active'));
+    if(timelines.length>0) timelines[0].classList.add('active');
+    const btns = pv.querySelectorAll('.pv-btn');
+    btns.forEach(b=>{b.classList.remove('a1','a2','a3')});
+    if(btns.length>0) btns[0].classList.add('a1');
+  }
+}
+
+// Gestion vue par personne
+function showPerson(id, btn){
+  const pv = btn.closest('#person-view');
+  pv.querySelectorAll('.person-timeline').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  pv.querySelectorAll('.pv-btn').forEach(b=>{b.classList.remove('a1','a2','a3')});
+  const colors = {p1:'a1',p2:'a2',p3:'a3'};
+  btn.classList.add(colors[id]);
+}
+</script>
+</body>
+</html>

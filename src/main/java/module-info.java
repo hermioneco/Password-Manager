@@ -51,13 +51,15 @@ module com.lockbox{
     opens com.lockbox to javafx.fxml, spring.core, spring.beans, spring.context;
     opens com.lockbox.controller to javafx.fxml, spring.beans, spring.context;
     opens com.lockbox.model to org.hibernate.orm.core, jakarta.persistence, spring.core;
-    opens com.lockbox.service to spring.beans, spring.context, spring.core;
-    opens com.lockbox.dao to spring.beans, spring.context, spring.data.jpa;
+    opens com.lockbox.services to spring.beans, spring.context, spring.core;
+    opens com.lockbox.repository to spring.beans, spring.context, spring.data.jpa;
+    opens com.lockbox.util to spring.beans, spring.context, spring.core;
 
     // ── Exporter les packages publics ───────────────────
     exports com.lockbox;
     exports com.lockbox.controller;
     exports com.lockbox.model;
     exports com.lockbox.services;
-    //exports com.lockbox.dao;
+    exports com.lockbox.repository;
+    exports com.lockbox.util;
 }

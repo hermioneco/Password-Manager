@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.lockbox.services;
 
 import com.lockbox.exceptions.InvalidCredentialsException;
@@ -15,43 +11,48 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    
-    
-    private  final UserRepository userRepo;
-    private  final CryptoService crypto ;
-    
-    public AuthService(UserRepository userRepo, CryptoService crypto) {
+
+    private final UserRepository userRepo;
+    private final CryptoService crypto;
+    private final SessionManager sessionManager;
+
+    @Autowired
+    public AuthService(UserRepository userRepo, CryptoService crypto, SessionManager sessionManager) {
         this.userRepo = userRepo;
         this.crypto = crypto;
+        this.sessionManager = sessionManager;
     }
-    
-    public  void register(String email, char[] PlainPassword) {
+
+    public void register(String email, char[] plainPassword) {
         try {
             User user = new User();
-         user.setEmail(email);
-         user.setPasswordHash(crypto.hashingPassword(PlainPassword));
-         userRepo.save(user);
-        }catch (Exception e){
+            user.setEmail(email);
+            user.setPasswordHash(crypto.hashingPassword(plainPassword));
+            userRepo.save(user);
+        } catch (Exception e) {
             throw new RuntimeException("Échec de l'inscription", e);
         }
-        finally{
-         PlainPassword = null;  }
     }
-    
-    public SecretKey login(String email, char[] EnteredPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        User user = userRepo.findByEmail(email).orElseThrow(() ->new InvalidCredentialsException());
-        
-        try {
-            if(crypto.comparePassword(user.getPasswordHash(), EnteredPassword)) {
-                return crypto.generateKey(EnteredPassword, user.getSalt());
+
+    public void register(String email, String plainPassword) {
+        register(email, plainPassword != null ? plainPassword.toCharArray() : new char[0]);
+    }
+
+    public SecretKey login(String email, char[] enteredPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        User user = userRepo.findByEmail(email).orElseThrow(InvalidCredentialsException::new);
+
+        if (crypto.comparePassword(user.getPasswordHash(), enteredPassword)) {
+            SecretKey key = crypto.generateKey(enteredPassword, user.getSalt());
+            if (sessionManager != null) {
+                sessionManager.setKey(key);
             }
-        }catch(InvalidCredentialsException e){
-            throw e;
+            return key;
         }
-        finally{
-        EnteredPassword = null;
-        }
-       throw new InvalidCredentialsException();
+        throw new InvalidCredentialsException();
+    }
+
+    public SecretKey login(String email, String enteredPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return login(email, enteredPassword != null ? enteredPassword.toCharArray() : new char[0]);
     }
 }
 

@@ -4,8 +4,6 @@
  */
 package com.lockbox.model;
 
-import javax.persistence.Transient;
-
 /**
  *
  * @author ashie

@@ -1,60 +1,88 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.lockbox.services;
 
 import com.lockbox.exceptions.ClosedSessionException;
 import com.lockbox.model.Credential;
-import com.lockbox.repository.*;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
+import com.lockbox.repository.CredentialRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author ashie
- */
+import javax.crypto.SecretKey;
+import java.util.List;
+
 @Service
 public class CredentialService {
 
-    private SessionManager sessionManager;
-    private CredentialRepository credentialRepo;
-    private CryptoService cryptoService;
+    private final SessionManager sessionManager;
+    private final CredentialRepository credentialRepo;
+    private final CryptoService cryptoService;
 
-    public Credential save(Credential credential) throws Exception {
-        // 1. récupérer la clé
-
-        try {
-            SecretKey key = sessionManager.getKey();
-            // 2. vérifier qu'elle n'est pas null
-            if (key == null) {
-                throw new ClosedSessionException();
-            }
-            credential.setEncryptedPassword(cryptoService.encrypt(credential.getPlainPassword(), key).toString());
-            credentialRepo.save(credential);
-
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            credential.setPlainPassword("");
-        }
-        return credential;
-
+    @Autowired
+    public CredentialService(SessionManager sessionManager, CredentialRepository credentialRepo, CryptoService cryptoService) {
+        this.sessionManager = sessionManager;
+        this.credentialRepo = credentialRepo;
+        this.cryptoService = cryptoService;
     }
 
-    public List<Credential> findAll(Long id) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-        List<Credential> credentials = credentialRepo.findAllByUserId(id);
-        for (Credential credential : credentials) {
-            credential.setPlainPassword(cryptoService.decrypt(credential.getEncryptedPassword(), sessionManager.getKey()).toString());
+    public Credential save(Credential credential) throws Exception {
+        SecretKey key = sessionManager.getKey();
+        if (key == null) {
+            throw new ClosedSessionException();
+        }
+
+        if (credential.getPlainPassword() != null && !credential.getPlainPassword().isEmpty()) {
+            String encryptedPass = cryptoService.encrypt(credential.getPlainPassword(), key);
+            credential.setEncryptedPassword(encryptedPass);
+        }
+
+        if (credential.getLogin() != null && !credential.getLogin().isEmpty()) {
+            String encryptedLogin = cryptoService.encrypt(credential.getLogin(), key);
+            credential.setLogin(encryptedLogin);
+        }
+
+        if (credential.getNotes() != null && !credential.getNotes().isEmpty()) {
+            String encryptedNotes = cryptoService.encrypt(credential.getNotes(), key);
+            credential.setNotes(encryptedNotes);
+        }
+
+        return credentialRepo.save(credential);
+    }
+
+    public List<Credential> findAll(Long userId) throws Exception {
+        SecretKey key = sessionManager.getKey();
+        if (key == null) {
+            throw new ClosedSessionException();
+        }
+
+        List<Credential> credentials = credentialRepo.findAllByUserId(userId);
+        for (Credential c : credentials) {
+            try {
+                if (c.getEncryptedPassword() != null && !c.getEncryptedPassword().isEmpty()) {
+                    c.setPlainPassword(cryptoService.decrypt(c.getEncryptedPassword(), key));
+                }
+                if (c.getLogin() != null && !c.getLogin().isEmpty()) {
+                    c.setLogin(cryptoService.decrypt(c.getLogin(), key));
+                }
+                if (c.getNotes() != null && !c.getNotes().isEmpty()) {
+                    c.setNotes(cryptoService.decrypt(c.getNotes(), key));
+                }
+            } catch (Exception e) {
+                c.setPlainPassword("Error decrypting");
+            }
         }
         return credentials;
     }
 
+    public void deleteById(Long id) {
+        credentialRepo.deleteById(id);
+    }
+
+    private boolean isBase64(String str) {
+        if (str == null || str.length() % 4 != 0) return false;
+        try {
+            java.util.Base64.getDecoder().decode(str);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

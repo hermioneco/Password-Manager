@@ -30,80 +30,85 @@ import org.springframework.stereotype.Service;
 public class CryptoService {
 
     private final Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-    public  byte[] encrypt(String Password, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+    public String encrypt(String plainText, SecretKey key) throws Exception {
+        if (plainText == null) plainText = "";
         byte[] iv = generateIV();
 
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
         cipher.init(Cipher.ENCRYPT_MODE, key, gcmSpec);
-        byte[] ciphertext = cipher.doFinal(Password.getBytes());
+        byte[] ciphertext = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
 
-        byte[] combinedIvAndCipherText = new byte[iv.length + ciphertext.length];
-        System.arraycopy(iv, 0, combinedIvAndCipherText, 0, iv.length);
-        System.arraycopy(ciphertext, 0, combinedIvAndCipherText, iv.length, ciphertext.length);
+        byte[] combined = new byte[iv.length + ciphertext.length];
+        System.arraycopy(iv, 0, combined, 0, iv.length);
+        System.arraycopy(ciphertext, 0, combined, iv.length, ciphertext.length);
 
-        return Base64.getEncoder().encode(combinedIvAndCipherText);
-
+        return Base64.getEncoder().encodeToString(combined);
     }
 
-    public  byte[] decrypt(String cipherText, SecretKey key) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-        byte[] decodedCipherText = Base64.getDecoder().decode(cipherText);
+    public String decrypt(String cipherText, SecretKey key) throws Exception {
+        if (cipherText == null || cipherText.isEmpty()) return "";
+        byte[] decoded = Base64.getDecoder().decode(cipherText);
 
-        // Extract IV and encrypted text
         byte[] iv = new byte[12];
-        System.arraycopy(decodedCipherText, 0, iv, 0, iv.length);
-        byte[] encryptedText = new byte[decodedCipherText.length - iv.length];
-        System.arraycopy(decodedCipherText, iv.length, encryptedText, 0, encryptedText.length);
+        System.arraycopy(decoded, 0, iv, 0, iv.length);
+        byte[] encryptedText = new byte[decoded.length - iv.length];
+        System.arraycopy(decoded, iv.length, encryptedText, 0, encryptedText.length);
 
         GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
         byte[] decryptedBytes = cipher.doFinal(encryptedText);
 
-        return decryptedBytes;
-
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 
-    public  SecretKey generateKey(char[] password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public SecretKey generateKey(char[] password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(password, salt, 65536, 256);
-        SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
-                .getEncoded(), "AES");
-        return secret;
-        }catch(Exception e){
-            throw e;
-        }finally{
-           Arrays.fill(password, '\0');
+            KeySpec spec = new PBEKeySpec(password, salt, 65536, 256);
+            SecretKey secret = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
+            return secret;
+        } finally {
+            if (password != null) {
+                Arrays.fill(password, '\0');
+            }
         }
-            
     }
 
-    public  String hashingPassword(char[] PlainPassword) {
+    public SecretKey generateKey(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return generateKey(password != null ? password.toCharArray() : new char[0], salt);
+    }
 
+    public String hashingPassword(char[] plainPassword) {
         int ITERATIONS = 3;
-        int MEMORY_KB = 65536; 
+        int MEMORY_KB = 65536;
         int PARALLELISM = 4;
-        
-         char[] password = PlainPassword;
-        
-        String HashedPassword = argon2.hash(ITERATIONS, MEMORY_KB, PARALLELISM, password);
-        argon2.wipeArray(password);
-        return HashedPassword;
 
+        char[] password = plainPassword != null ? plainPassword : new char[0];
+        String hashedPassword = argon2.hash(ITERATIONS, MEMORY_KB, PARALLELISM, password);
+        argon2.wipeArray(password);
+        return hashedPassword;
     }
-    
-    public boolean comparePassword(String HashedPassword, char[] EntredPassword) {
-        return argon2.verify(HashedPassword,EntredPassword);
-        
+
+    public String hashingPassword(String plainPassword) {
+        return hashingPassword(plainPassword != null ? plainPassword.toCharArray() : new char[0]);
     }
-    
+
+    public boolean comparePassword(String hashedPassword, char[] enteredPassword) {
+        if (hashedPassword == null || enteredPassword == null) return false;
+        return argon2.verify(hashedPassword, enteredPassword);
+    }
+
+    public boolean comparePassword(String hashedPassword, String enteredPassword) {
+        if (hashedPassword == null || enteredPassword == null) return false;
+        return comparePassword(hashedPassword, enteredPassword.toCharArray());
+    }
+
     public byte[] generateIV() {
-        byte [] iv = new byte[12];
-        SecureRandom secureRadom = new SecureRandom();
-        secureRadom.nextBytes(iv);
+        byte[] iv = new byte[12];
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(iv);
         return iv;
     }
-    
-    
 }
